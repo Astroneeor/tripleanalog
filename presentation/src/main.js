@@ -19,11 +19,11 @@ const slideDefs = [
             for Neonatal <span class="gold">Sepsis</span> Detection
           </h1>
           <div class="rule"></div>
-          <p class="body-text" style="max-width:600px;margin-bottom:40px;">
-            A three-biomarker electrochemical aptasensor platform —
-            <em>IL-6, PCT &amp; CRP</em> — enabling real-time infection
-            timeline tracking at the bedside.
-          </p>
+          <ul class="slide-bullets" style="max-width:820px;margin-bottom:34px;">
+            <li>Three-marker bedside screen: <strong style="color:var(--text);">IL-6, PCT, CRP</strong></li>
+            <li>Goal: detect risk earlier than culture turnaround</li>
+            <li>Output: timeline-informed sepsis risk support</li>
+          </ul>
           <div class="team-grid">
             ${['Neeor Alam','Cassandra Len De Vera','Hannah Nguyen','Calumn Hickerson'].map((n,i) => `
             <div class="team-card" style="animation-delay:${0.6+i*0.1}s">
@@ -88,39 +88,28 @@ const slideDefs = [
         <div class="stagger">
           <div class="section-tag">slide 03 · State of the Art</div>
           <h2 class="slide-title">Existing Biosensor <em>Approaches</em></h2>
-          <p class="slide-subtitle">Why current tools still miss early, reliable neonatal sepsis decisions.</p>
+          <p class="slide-subtitle">Current tools still miss early, reliable decision windows.</p>
           <div class="card red-accent" style="padding:20px 24px;margin-bottom:18px;">
             <div class="v-label" style="color:var(--red);">Core Clinical Reality</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
               <div class="card" style="padding:16px;background:rgba(255,107,122,0.06);border-color:rgba(255,107,122,0.25);">
                 <div class="mono-label" style="color:var(--red);margin-bottom:6px;">Gap 1</div>
-                <p class="body-text" style="font-size:16px;">No tool consistently diagnoses sepsis <strong style="color:var(--text);">early enough</strong> for frontline intervention.</p>
+                <p class="body-text" style="font-size:18px;">No tool consistently diagnoses sepsis <strong style="color:var(--text);">early enough</strong>.</p>
               </div>
               <div class="card" style="padding:16px;background:rgba(255,107,122,0.06);border-color:rgba(255,107,122,0.25);">
                 <div class="mono-label" style="color:var(--red);margin-bottom:6px;">Gap 2</div>
-                <p class="body-text" style="font-size:16px;">No single biomarker is reliable enough to represent full sepsis status alone.</p>
+                <p class="body-text" style="font-size:18px;">No single biomarker is reliable enough alone.</p>
               </div>
             </div>
           </div>
-          <div class="two-col" style="gap:18px;">
-            <div class="card" style="padding:20px 22px;">
-              <div class="v-label">Why gold standard is insufficient alone</div>
-              <ul class="slide-bullets">
-                <li>Positive blood culture confirmation: typically <strong style="color:var(--text);">36–48 h</strong></li>
-                <li>Too slow for urgent neonatal treatment windows</li>
-                <li>&lt;1% of suspected neonatal sepsis cases yield positive cultures</li>
-                <li>PCR can be faster, but is not routinely available in many settings</li>
-              </ul>
-            </div>
-            <div class="card gold-accent" style="padding:20px 22px;">
-              <div class="v-label" style="color:var(--gold);">How we chose biomarkers</div>
-              <ul class="slide-bullets">
-                <li>Needed combined <strong style="color:var(--text);">high sensitivity, specificity, PPV, and NPV</strong></li>
-                <li>Used multi-marker strategy to support both diagnosis and exclusion</li>
-                <li>Selected IL-6 + PCT + CRP to cover early-to-late progression</li>
-                <li>Detection chemistry in our design uses <strong style="color:var(--text);">antibody-based recognition</strong></li>
-              </ul>
-            </div>
+          <div class="card gold-accent" style="padding:20px 22px;">
+            <div class="v-label" style="color:var(--gold);">Decision Basis</div>
+            <ul class="slide-bullets">
+              <li>Blood culture confirms, but takes <strong style="color:var(--text);">36–48 h</strong></li>
+              <li>PCR can be faster, but limited practical availability</li>
+              <li>Need strong <strong style="color:var(--text);">sensitivity + PPV/NPV</strong> for early screening</li>
+              <li>Final selection: IL-6 + PCT + CRP with antibody-based recognition</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -138,26 +127,25 @@ const slideDefs = [
         <div class="stagger">
           <div class="section-tag">slide 04 · Design Gap</div>
           <h2 class="slide-title">The gap we're <em>filling</em></h2>
-          <div class="card" style="padding:32px 36px;margin-bottom:24px;background:rgba(232,197,106,0.06);border-color:rgba(232,197,106,0.3);">
-            <div class="mono-label" style="color:var(--gold);margin-bottom:12px;">design challenge</div>
-            <p class="body-text" style="font-size:clamp(18px,2.2vw,26px);line-height:1.5;">
-              No existing POC device detects <em>multiple</em> sepsis biomarkers simultaneously
-              to construct a <strong style="color:var(--gold);">temporal infection timeline</strong>
-              — telling clinicians not just <em>if</em> sepsis is present, but <em>when it started</em>
-              and how severe it has become.
-            </p>
+          <div class="card" style="padding:28px 30px;margin-bottom:20px;background:rgba(232,197,106,0.06);border-color:rgba(232,197,106,0.3);">
+            <div class="mono-label" style="color:var(--gold);margin-bottom:10px;">Design Challenge</div>
+            <ul class="slide-bullets">
+              <li>No current POC tool maps <strong style="color:var(--text);">sepsis timeline progression</strong></li>
+              <li>Clinicians need both presence and stage, not binary output only</li>
+              <li>Our gap: multi-marker signal fusion for earlier action</li>
+            </ul>
           </div>
           <div class="two-col">
             <div>
               <p class="mono-label" style="margin-bottom:10px;color:var(--red);">current standard</p>
               <div class="card red-accent">
-                <p class="body-text" style="font-size:15px;">Single biomarker \u2192 Binary result \u2192 No timeline \u2192 Delayed treatment</p>
+                <p class="body-text" style="font-size:18px;">Single marker \u2192 binary result \u2192 no timeline</p>
               </div>
             </div>
             <div>
               <p class="mono-label" style="margin-bottom:10px;color:var(--cyan);">our proposal</p>
               <div class="card">
-                <p class="body-text" style="font-size:15px;">Three biomarkers \u2192 Simultaneous readout \u2192 Infection timeline \u2192 Earlier intervention</p>
+                <p class="body-text" style="font-size:18px;">Three markers \u2192 integrated readout \u2192 earlier intervention</p>
               </div>
             </div>
           </div>
@@ -228,44 +216,20 @@ const slideDefs = [
         <div class="stagger">
           <div class="section-tag">slide 06 · Biomarker Selection</div>
           <h2 class="slide-title"><em>Which</em> markers, and why?</h2>
-          <div class="rule"></div>
-          <table class="bm-table">
-            <thead>
-              <tr>
-                <th>Marker</th>
-                <th>Role</th>
-                <th>Peak Time</th>
-                <th>Diagnostic Value</th>
-                <th>Clinical Range</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="bm-name">IL-6</td>
-                <td class="body-text" style="font-size:16px;">Pro-inflammatory cytokine — earliest responder</td>
-                <td class="bm-time">2–4 h</td>
-                <td class="body-text" style="font-size:16px;">Highest early sensitivity; falls with treatment</td>
-                <td class="mono-label">0.01–10 ng/mL</td>
-              </tr>
-              <tr>
-                <td class="bm-name" style="color:var(--gold) !important;">PCT</td>
-                <td class="body-text" style="font-size:16px;">Pro-hormone; highly specific to bacterial sepsis</td>
-                <td class="bm-time" style="color:var(--gold) !important;">8–24 h</td>
-                <td class="body-text" style="font-size:16px;">Best specificity; guides antibiotic therapy</td>
-                <td class="mono-label">0.5–50 ng/mL</td>
-              </tr>
-              <tr>
-                <td class="bm-name" style="color:#ff9980 !important;">CRP</td>
-                <td class="body-text" style="font-size:16px;">Acute-phase protein; confirms progression</td>
-                <td class="bm-time" style="color:#ff9980 !important;">24–48 h</td>
-                <td class="body-text" style="font-size:16px;">Lower early specificity; strong for monitoring</td>
-                <td class="mono-label">0.1–15 \u00B5g/mL</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="mono-label" style="margin-top:18px;opacity:0.6;">
-            Sources: Kasper et al. (PMC2220039) · Turkish J. Pediatrics 2024 · Shi et al. 2025
-          </p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+            ${[
+              { name:'IL-6', color:'var(--cyan)', window:'2–4 h', role:'Earliest inflammatory responder', value:'Best early sensitivity' },
+              { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity' },
+              { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support' },
+            ].map(m => `
+            <div class="card" style="padding:20px;border-color:${m.color}44;">
+              <div style="font-family:var(--font-display);font-size:34px;font-weight:800;color:${m.color};margin-bottom:10px;">${m.name}</div>
+              <p class="mono-label" style="color:${m.color};margin-bottom:6px;">Time Window</p>
+              <p class="body-text" style="font-size:19px;margin-bottom:10px;">${m.window}</p>
+              <p class="body-text" style="font-size:18px;margin-bottom:6px;">${m.role}</p>
+              <p class="body-text" style="font-size:18px;">${m.value}</p>
+            </div>`).join('')}
+          </div>
         </div>
       </div>
     `
@@ -280,40 +244,18 @@ const slideDefs = [
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
           <div class="section-tag">slide 07 · Marker Deep Dive</div>
-          <h2 class="slide-title">IL-6 · PCT · CRP — the <em>how</em></h2>
+          <h2 class="slide-title">IL-6 · PCT · CRP — the <em>decision logic</em></h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
             ${[
-              {
-                name:'IL-6', color:'var(--cyan)',
-                what:'Cytokine released by macrophages within minutes of bacterial invasion. Triggers the acute-phase response.',
-                why:'Rises earliest (2\u20134h), making it our primary early-warning signal.',
-                how:'Electrochemical EIS aptasensor. Anti-IL-6 aptamer on interdigitated gold electrode.',
-                freq:'~10 Hz EIS probe frequency'
-              },
-              {
-                name:'PCT', color:'var(--gold)',
-                what:'Precursor of calcitonin. Systemically released during bacterial (not viral) infection.',
-                why:'Most specific marker for bacterial sepsis. Rising PCT \u2192 antibiotic needed.',
-                how:'Same EIS architecture, separate aptamer. Calibrated Rct\u2080 = 500k\u03A9.',
-                freq:'~10 Hz EIS probe frequency'
-              },
-              {
-                name:'CRP', color:'#ff9980',
-                what:'Liver-derived acute-phase protein. Responds to IL-6 signalling, peaks later.',
-                why:'Confirms infection timeline and monitors treatment response at 24\u201348h.',
-                how:'EIS aptasensor with Rct\u2080 = 50k\u03A9. Larger Cdl shift due to protein size.',
-                freq:'~100 Hz EIS probe frequency'
-              }
+              { name:'IL-6', color:'var(--cyan)', cue:'Earliest spike', use:'Early-warning trigger', note:'Best for onset timing' },
+              { name:'PCT', color:'var(--gold)', cue:'Most specific', use:'Confidence for bacterial risk', note:'Supports treatment urgency' },
+              { name:'CRP', color:'#ff9980', cue:'Late sustained rise', use:'Progression tracking', note:'Supports monitoring' },
             ].map(m => `
             <div class="card" style="border-color:${m.color}40;padding:20px;">
-              <div style="font-family:var(--font-display);font-weight:900;font-size:32px;color:${m.color};margin-bottom:14px;">${m.name}</div>
-              <div class="mono-label" style="margin-bottom:4px;">What</div>
-              <p class="body-text" style="font-size:15px;margin-bottom:10px;">${m.what}</p>
-              <div class="mono-label" style="margin-bottom:4px;">Why</div>
-              <p class="body-text" style="font-size:15px;margin-bottom:10px;">${m.why}</p>
-              <div class="mono-label" style="margin-bottom:4px;">How</div>
-              <p class="body-text" style="font-size:15px;margin-bottom:8px;">${m.how}</p>
-              <div style="font-family:var(--font-mono);font-size:12px;color:${m.color};background:${m.color}15;padding:5px 10px;border-radius:3px;">${m.freq}</div>
+              <div style="font-family:var(--font-display);font-weight:900;font-size:34px;color:${m.color};margin-bottom:12px;">${m.name}</div>
+              <p class="body-text" style="font-size:19px;margin-bottom:8px;">${m.cue}</p>
+              <p class="body-text" style="font-size:18px;margin-bottom:8px;">${m.use}</p>
+              <div style="font-family:var(--font-mono);font-size:13px;color:${m.color};background:${m.color}15;padding:6px 10px;border-radius:3px;">${m.note}</div>
             </div>`).join('')}
           </div>
         </div>
@@ -331,23 +273,20 @@ const slideDefs = [
         <div class="stagger">
           <div class="section-tag">slide 08 · Sensor Values</div>
           <h2 class="slide-title">Equivalent circuit values <em>per channel</em></h2>
-          <p class="slide-subtitle">Try the concentration slider below to see how Rct and Cdl respond.</p>
+          <p class="slide-subtitle">Core channel values + one interactive example.</p>
           <div class="two-col">
             <div>
-              <table class="bm-table">
-                <thead><tr><th>Component</th><th>IL-6</th><th>CRP</th><th>PCT</th></tr></thead>
-                <tbody>
-                  <tr><td>Rs (\u03A9)</td><td class="mono-label" style="color:var(--cyan)">1k</td><td class="mono-label" style="color:var(--cyan)">1k</td><td class="mono-label" style="color:var(--cyan)">1k</td></tr>
-                  <tr><td>Rct\u2080 (\u03A9)</td><td class="mono-label" style="color:var(--cyan)">5k</td><td class="mono-label" style="color:var(--cyan)">50k</td><td class="mono-label" style="color:var(--cyan)">500k</td></tr>
-                  <tr><td>Cdl\u2080 (F)</td><td class="mono-label" style="color:var(--cyan)">10p</td><td class="mono-label" style="color:var(--cyan)">47p</td><td class="mono-label" style="color:var(--cyan)">22p</td></tr>
-                  <tr><td>Kd</td><td class="mono-label" style="color:var(--gold)">1 ng/mL</td><td class="mono-label" style="color:var(--gold)">100 ng/mL</td><td class="mono-label" style="color:var(--gold)">5 ng/mL</td></tr>
-                  <tr><td>Rf (TIA)</td><td class="mono-label" style="color:var(--cyan)">100k</td><td class="mono-label" style="color:var(--cyan)">100k</td><td class="mono-label" style="color:var(--cyan)">100k</td></tr>
-                </tbody>
-              </table>
-              <ul class="slide-bullets" style="margin-top:12px;">
-                <li style="font-size:15px;">Rct <strong style="color:var(--cyan);">decreases</strong> as aptamer sites become occupied</li>
-                <li style="font-size:15px;">Cdl <strong style="color:var(--cyan);">increases</strong> as bound protein alters the dielectric</li>
-              </ul>
+              <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+                ${[
+                  { label:'IL-6 channel', vals:'Rct\u2080 5k\u03A9 · Cdl\u2080 10pF · Kd 1 ng/mL', tone:'var(--cyan)' },
+                  { label:'PCT channel', vals:'Rct\u2080 500k\u03A9 · Cdl\u2080 22pF · Kd 5 ng/mL', tone:'var(--gold)' },
+                  { label:'CRP channel', vals:'Rct\u2080 50k\u03A9 · Cdl\u2080 47pF · Kd 100 ng/mL', tone:'#ff9980' },
+                ].map(c => `
+                <div class="card" style="padding:16px;border-color:${c.tone}44;">
+                  <p class="mono-label" style="color:${c.tone};margin-bottom:6px;">${c.label}</p>
+                  <p class="body-text" style="font-size:18px;">${c.vals}</p>
+                </div>`).join('')}
+              </div>
             </div>
             <div>
               <div class="card" style="padding:20px;">
@@ -468,34 +407,21 @@ const slideDefs = [
           <div class="version-row" style="margin-bottom:14px;">
             <div class="version-card rejected">
               <div class="v-label">V1 \u2014 Single Marker (IL-6)</div>
-              <ul class="slide-bullets">
-                <li style="font-size:15px;">Strong early signal but short half-life vulnerability</li>
-                <li style="font-size:15px;">Insufficient standalone accountability for full progression</li>
-              </ul>
+              <p class="body-text" style="font-size:18px;">Strong early signal, but short half-life limits reliability alone.</p>
             </div>
             <div class="version-card rejected">
               <div class="v-label">V2 \u2014 Dual Marker (PCT + CRP)</div>
-              <ul class="slide-bullets">
-                <li style="font-size:15px;">Improved trend capture but still misses earliest dynamics</li>
-                <li style="font-size:15px;">Better reliability, but not enough for high-confidence screening</li>
-              </ul>
+              <p class="body-text" style="font-size:18px;">Improved trend capture, but still misses earliest sepsis dynamics.</p>
             </div>
           </div>
           <div class="version-row">
             <div class="version-card rejected">
               <div class="v-label">V3 \u2014 Triple Marker (switch-based)</div>
-              <ul class="slide-bullets">
-                <li style="font-size:15px;">Concept met accountability goal, but simulation robustness failed</li>
-                <li style="font-size:15px;">Switch model instability created unacceptable verification risk</li>
-              </ul>
+              <p class="body-text" style="font-size:18px;">Right concept, but switch-model instability failed verification standards.</p>
             </div>
             <div class="version-card active-v">
               <div class="v-label" style="color:var(--cyan);">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
-              <ul class="slide-bullets">
-                <li style="font-size:15px;">Independent channel verification supports traceable accountability</li>
-                <li style="font-size:15px;">4:1 behavioral MUX with stable readout path to ADC</li>
-                <li style="font-size:15px;">Explicitly tracked risks: false positives, cross-reactivity, model limits</li>
-              </ul>
+              <p class="body-text" style="font-size:18px;">Stable, traceable architecture with independent channel verification and explicit risk tracking.</p>
             </div>
           </div>
         </div>
@@ -516,20 +442,19 @@ const slideDefs = [
           <h2 class="slide-title">Why <em>V4</em> is the right answer</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
             ${[
-              { icon:'\u26A1', title:'Long sensor life', body:'DNA aptamers: no cold chain, thermally stable, >3 months at room temp' },
-              { icon:'\uD83D\uDCE1', title:'Clean electrical output', body:'Non-faradaic EIS \u2192 direct impedance-to-voltage. No optics, no redox probe' },
-              { icon:'\u23F1', title:'Fast response', body:'Equilibrium-driven binding. Full signal in minutes. No incubation step' },
+              { title:'Long sensor life', body:'Stable recognition layer supports practical storage and transport' },
+              { title:'Readable signal', body:'Direct impedance change converts cleanly to electrical output' },
+              { title:'Fast response', body:'Minutes-scale binding enables bedside screening workflow' },
             ].map(r => `
             <div class="card" style="padding:22px;">
-              <div style="font-size:36px;margin-bottom:12px;">${r.icon}</div>
-              <div style="font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--text);margin-bottom:10px;">${r.title}</div>
-              <p class="body-text" style="font-size:16px;">${r.body}</p>
+              <div style="font-family:var(--font-display);font-weight:700;font-size:24px;color:var(--text);margin-bottom:10px;">${r.title}</div>
+              <p class="body-text" style="font-size:19px;">${r.body}</p>
             </div>`).join('')}
           </div>
           <div class="card gold-accent" style="padding:20px 24px;">
             <p class="body-text" style="font-size:20px;">
-              <strong style="color:var(--gold);">Key equation:</strong> Rct = Rct\u2080 / (1 + C/Kd) &nbsp;\u2014&nbsp;
-              concentration \u2191 &nbsp;\u2192&nbsp; Rct \u2193 &nbsp;\u2192&nbsp; V<sub>out</sub> = I \u00D7 Rf \u2191
+              <strong style="color:var(--gold);">Key relation:</strong>
+              concentration \u2191 \u2192 R<sub>ct</sub> \u2193 \u2192 V<sub>out</sub> \u2191
             </p>
           </div>
         </div>
@@ -741,8 +666,8 @@ const slideDefs = [
           <h2 class="slide-title">Learnings &amp; <em>next steps</em></h2>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
             ${[
-              { label:'What worked', color:'var(--cyan)', items:['Aptamer-EIS: stable, simulatable, literature-validated','Randles cell maps biology \u2192 circuit cleanly','Three parallel channels: independently verifiable','Langmuir binding \u2192 direct calibration curve'] },
-              { label:'Limitations to address', color:'var(--gold)', items:['Idealised Randles model \u2014 no Warburg impedance','ADG1404 has no LTSpice model \u2014 used behavioural MUX','Aptamer cross-reactivity in blood needs wet-lab validation','Health Canada Class II certification required'] },
+              { label:'What worked', color:'var(--cyan)', items:['Tri-marker logic maps to clinical progression','Parallel channels gave clean, verifiable simulation outputs','Signal chain remains portable and practical for bedside use'] },
+              { label:'Limitations to address', color:'var(--gold)', items:['Model simplifications still require wet-lab validation','Cross-reactivity and false positives need clinical tuning','Regulatory path and safety validation remain mandatory'] },
             ].map(col => `
             <div class="card" style="padding:22px 24px;border-color:${col.color}40;">
               <div class="mono-label" style="color:${col.color};margin-bottom:12px;">${col.label}</div>
