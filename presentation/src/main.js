@@ -101,8 +101,6 @@ const slideDefs = [
             <ul class="slide-bullets">
               <li>No single marker can reliably represent sepsis status</li>
               <li>Need strong <strong style="color:var(--text);">sensitivity + PPV/NPV</strong> for early screening</li>
-              <li>Final selection done through literature review: IL-6 + PCT + CRP</li>
-              <li>Detection chemistry: antibody-based recognition</li>
             </ul>
           </div>
         </div>
@@ -182,13 +180,14 @@ const slideDefs = [
                     </svg>`).join('')}
                 </div>
                 <p class="mono-label" style="text-align:center;margin-top:4px;opacity:0.9;">time post-infection \u2192</p>
-                <p class="body-text" style="text-align:center;font-size:20px;margin-top:8px;">Caption: IL-6 spikes first, PCT follows, CRP rises later for staging support.</p>
+                <p class="body-text" style="text-align:center;font-size:20px;margin-top:8px;">IL-6 spikes first, PCT follows, and CRP rises later for staging support.</p>
               </div>
             </div>
           </div>
           <ul class="slide-bullets" style="margin-top:16px;">
             <li>Simultaneous readout determines <strong style="color:var(--text);">onset time</strong>, severity trend, and treatment response</li>
             <li>A single-marker device structurally cannot provide this</li>
+            <li>Detection chemistry uses antibody-based recognition across all three channels</li>
           </ul>
         </div>
       </div>
@@ -212,46 +211,36 @@ const slideDefs = [
           <h2 class="slide-title"><em>Which</em> markers, and why?</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
             ${[
-              { name:'IL-6', color:'var(--cyan)', window:'2–4 h', role:'Earliest inflammatory responder', value:'Best early sensitivity', active:false },
-              { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity', active:false },
-              { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support', active:true },
+              { name:'IL-6', color:'var(--cyan)', window:'2–4 h', role:'Earliest inflammatory responder', value:'Best early sensitivity', active:false, focus:'Early spike enables early detection.' },
+              { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity', active:false, focus:'High specificity improves bacterial-risk confidence.' },
+              { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support', active:true, focus:'Late sustained rise supports progression monitoring.' },
             ].map(m => `
             <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.active ? `${m.color}` : `${m.color}44`};box-shadow:${m.active ? `0 0 22px ${m.color}33` : 'none'};" data-marker="${m.name}">
               <div style="font-family:var(--font-display);font-size:34px;font-weight:800;color:${m.color};margin-bottom:10px;">${m.name}</div>
               <p class="mono-label" style="color:${m.color};margin-bottom:6px;">Time Window</p>
               <p class="body-text" style="font-size:19px;margin-bottom:10px;">${m.window}</p>
               <p class="body-text" style="font-size:18px;margin-bottom:6px;">${m.role}</p>
-              <p class="body-text" style="font-size:18px;">${m.value}</p>
+              <p class="body-text marker-value" style="font-size:18px;" data-default="${m.value}" data-focus="${m.focus}">${m.value}</p>
             </div>`).join('')}
-          </div>
-          <div class="card gold-accent" style="margin-top:14px;padding:16px 20px;">
-            <p class="body-text" id="marker-highlight" style="font-size:22px;">CRP highlight: tracks later-phase progression and monitoring response.</p>
           </div>
         </div>
       </div>
     `,
-    onActivate: () => {
+    onActivate: (dir = 1) => {
       const points = Array.from(document.querySelectorAll('.marker-point'))
-      const highlight = document.getElementById('marker-highlight')
-      if (!points.length || !highlight) return
-      const notes = [
-        { marker: 'IL-6', text: 'IL-6 highlight: earliest spike enables rapid early-warning support.' },
-        { marker: 'PCT', text: 'PCT highlight: stronger bacterial specificity improves confidence.' },
-        { marker: 'CRP', text: 'CRP highlight: tracks later-phase progression and monitoring response.' },
-      ]
-      let idx = 0
-      const rotate = () => {
-        points.forEach((el, i) => {
-          const active = i === idx
-          el.style.borderColor = active ? 'var(--gold)' : 'var(--border-bright)'
-          el.style.boxShadow = active ? '0 0 22px rgba(232,197,106,0.33)' : 'none'
-        })
-        highlight.textContent = notes[idx].text
-        idx = (idx + 1) % notes.length
-      }
-      rotate()
-      if (window.__markerTimer) clearInterval(window.__markerTimer)
-      window.__markerTimer = setInterval(rotate, 2400)
+      if (!points.length) return
+      const step = dir >= 0 ? 1 : -1
+      const count = points.length
+      window.__markerIdx = typeof window.__markerIdx === 'number' ? window.__markerIdx : 0
+      window.__markerIdx = (window.__markerIdx + step + count) % count
+      points.forEach((el, i) => {
+        const active = i === window.__markerIdx
+        el.style.borderColor = active ? 'var(--gold)' : 'var(--border-bright)'
+        el.style.boxShadow = active ? '0 0 22px rgba(232,197,106,0.33)' : 'none'
+        const valueEl = el.querySelector('.marker-value')
+        if (!valueEl) return
+        valueEl.textContent = active ? valueEl.dataset.focus : valueEl.dataset.default
+      })
     }
   },
 
@@ -769,7 +758,7 @@ function render() {
     deck.appendChild(el)
   })
   updateUI()
-  if (slides[0].onActivate) slides[0].onActivate()
+  if (slides[0].onActivate) slides[0].onActivate(1)
 }
 
 function navigate(dir) {
@@ -792,7 +781,7 @@ function navigate(dir) {
 
   current = next
   updateUI()
-  if (slides[current].onActivate) slides[current].onActivate()
+  if (slides[current].onActivate) slides[current].onActivate(dir)
 }
 
 function updateUI() {
