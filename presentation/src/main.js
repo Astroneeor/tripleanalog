@@ -40,7 +40,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:500px;height:500px;top:-80px;left:-150px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 02 · Problem Statement</div>
+          <div class="section-tag">Problem Statement</div>
           <h2 class="slide-title">Neonatal sepsis kills <em>3 million</em> children a year</h2>
           <p class="slide-subtitle">The window for intervention is hours, not days.</p>
           <div class="two-col" style="gap:24px;">
@@ -80,7 +80,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 03 · State of the Art</div>
+          <div class="section-tag">State of the Art</div>
           <h2 class="slide-title">Existing Biosensor <em>Approaches</em></h2>
           <p class="slide-subtitle">Current tools still miss early, reliable decision windows.</p>
           <div class="card red-accent" style="padding:20px 24px;margin-bottom:18px;">
@@ -117,7 +117,7 @@ const slideDefs = [
       <div class="orb orb-gold" style="width:500px;height:500px;bottom:-100px;right:-100px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 04 · Design Gap</div>
+          <div class="section-tag">Design Gap</div>
           <h2 class="slide-title">The gap we're <em>filling</em></h2>
           <div class="card" style="padding:28px 30px;margin-bottom:20px;background:rgba(232,197,106,0.06);border-color:rgba(232,197,106,0.3);">
             <div class="mono-label" style="color:var(--gold);margin-bottom:10px;">Design Challenge</div>
@@ -153,7 +153,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 07 · Biomarker Strategy</div>
+          <div class="section-tag">Biomarker Strategy</div>
           <h2 class="slide-title">Why a <em>three-point</em> sensor?</h2>
           <p class="slide-subtitle" style="font-size:clamp(30px,3vw,40px);">One biomarker is a snapshot. Three biomarkers are a story.</p>
           <div class="card" style="padding:28px;">
@@ -207,7 +207,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 08 · Biomarker Selection</div>
+          <div class="section-tag">Biomarker Selection</div>
           <h2 class="slide-title"><em>Which</em> markers, and why?</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
             ${[
@@ -215,12 +215,12 @@ const slideDefs = [
               { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity', active:false, focus:'High specificity improves bacterial-risk confidence.' },
               { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support', active:true, focus:'Late sustained rise supports progression monitoring.' },
             ].map(m => `
-            <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.color}66;background:${m.color}12;" data-marker="${m.name}" data-color="${m.color}">
-              <div class="marker-name" style="font-family:var(--font-display);font-size:34px;font-weight:800;color:transparent;-webkit-text-stroke:1px ${m.color};margin-bottom:10px;">${m.name}</div>
+            <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.color}66;background:${m.color}12;transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;" data-marker="${m.name}" data-color="${m.color}">
+              <div class="marker-name" style="font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--text);margin-bottom:10px;transition:color .25s ease,font-weight .25s ease;">${m.name}</div>
               <p class="mono-label" style="color:${m.color};margin-bottom:6px;">Time Window</p>
               <p class="body-text" style="font-size:19px;margin-bottom:10px;">${m.window}</p>
               <p class="body-text" style="font-size:18px;margin-bottom:6px;">${m.role}</p>
-              <p class="body-text marker-value" style="font-size:18px;color:transparent;-webkit-text-stroke:1px ${m.color};font-weight:700;" data-default="${m.value}" data-focus="${m.focus}" data-color="${m.color}">${m.value}</p>
+              <p class="body-text marker-value" style="font-size:18px;color:var(--text);font-weight:700;transition:color .25s ease,font-weight .25s ease;" data-default="${m.value}" data-focus="${m.focus}" data-color="${m.color}">${m.value}</p>
             </div>`).join('')}
           </div>
         </div>
@@ -232,20 +232,22 @@ const slideDefs = [
       if (window.__markerTimers) window.__markerTimers.forEach((t) => clearTimeout(t))
       window.__markerTimers = []
       window.__markerStepDone = false
-      const paint = (activeIdx = null) => {
+      const paint = (activeIdx = null, allActive = false) => {
         points.forEach((el, i) => {
-          const active = i === activeIdx
+          const active = allActive || i === activeIdx
           const color = el.dataset.color
           const nameEl = el.querySelector('.marker-name')
           const valueEl = el.querySelector('.marker-value')
           if (nameEl) {
-            nameEl.style.color = active ? color : 'transparent'
+            nameEl.style.color = active ? color : 'var(--text)'
+            nameEl.style.fontWeight = active ? '900' : '700'
           }
           if (valueEl) {
             valueEl.textContent = active ? valueEl.dataset.focus : valueEl.dataset.default
-            valueEl.style.color = active ? color : 'transparent'
+            valueEl.style.color = active ? color : 'var(--text)'
             valueEl.style.fontWeight = active ? '800' : '700'
           }
+          el.style.boxShadow = active ? `0 0 24px ${color}44` : 'none'
         })
       }
       window.__paintMarkers = paint
@@ -255,10 +257,7 @@ const slideDefs = [
       if (dir < 0 || window.__markerStepDone) return false
       const paint = window.__paintMarkers
       if (typeof paint !== 'function') return false
-      ;[0, 1, 2].forEach((idx, step) => {
-        const timer = setTimeout(() => paint(idx), step * 420)
-        window.__markerTimers.push(timer)
-      })
+      paint(null, true)
       window.__markerStepDone = true
       return true
     }
@@ -272,7 +271,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 09 · Marker Deep Dive</div>
+          <div class="section-tag">Marker Deep Dive</div>
           <h2 class="slide-title">IL-6 · PCT · CRP — the <em>decision logic</em></h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
             ${[
@@ -300,7 +299,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 09 · Sensor Values</div>
+          <div class="section-tag">Sensor Values</div>
           <h2 class="slide-title">Equivalent circuit values <em>per channel</em></h2>
           <p class="slide-subtitle">Core channel values + one interactive example.</p>
           <div class="two-col">
@@ -385,7 +384,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 05 · Process + Professionalism</div>
+          <div class="section-tag">Process + Professionalism</div>
           <h2 class="slide-title">How professionalism shaped our <em>process</em></h2>
           <div class="card gold-accent" style="padding:18px 22px;margin-bottom:14px;">
             <ul class="slide-bullets">
@@ -422,7 +421,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 06 · Accountability Through Iteration</div>
+          <div class="section-tag">Accountability Through Iteration</div>
           <h2 class="slide-title">Transparent evolution for <em>reliability</em></h2>
           <div class="card" style="padding:18px 22px;margin-bottom:14px;">
             <ul class="slide-bullets">
@@ -432,22 +431,22 @@ const slideDefs = [
           </div>
           <div class="version-row" style="margin-bottom:14px;">
             <div class="version-card" style="background:rgba(0,220,200,0.08);border-color:rgba(0,220,200,0.45);">
-              <div class="v-label">V1 \u2014 Single Marker (IL-6)</div>
-              <p class="body-text" style="font-size:18px;">Strong early signal, but short half-life limits reliability alone.</p>
+              <div class="v-label" style="font-size:18px;">V1 \u2014 Single Marker (IL-6)</div>
+              <p class="body-text" style="font-size:22px;">Strong early signal, but short half-life limits reliability alone.</p>
             </div>
             <div class="version-card" style="background:rgba(232,197,106,0.08);border-color:rgba(232,197,106,0.45);">
-              <div class="v-label">V2 \u2014 Dual Marker (PCT + CRP)</div>
-              <p class="body-text" style="font-size:18px;">Improved trend capture, but still misses earliest sepsis dynamics.</p>
+              <div class="v-label" style="font-size:18px;">V2 \u2014 Dual Marker (PCT + CRP)</div>
+              <p class="body-text" style="font-size:22px;">Improved trend capture, but still misses earliest sepsis dynamics.</p>
             </div>
           </div>
           <div class="version-row">
             <div class="version-card" style="background:rgba(255,153,128,0.08);border-color:rgba(255,153,128,0.45);">
-              <div class="v-label">V3 \u2014 Triple Marker (switch-based)</div>
-              <p class="body-text" style="font-size:18px;">Right concept, but switch-model instability failed verification standards.</p>
+              <div class="v-label" style="font-size:18px;">V3 \u2014 Triple Marker (switch-based)</div>
+              <p class="body-text" style="font-size:22px;">Right concept, but switch-model instability failed verification standards.</p>
             </div>
             <div class="version-card active-v" style="box-shadow:0 0 28px rgba(0,220,200,0.25);border-color:var(--cyan);">
-              <div class="v-label" style="color:var(--cyan);">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
-              <p class="body-text" style="font-size:18px;">Stable, traceable architecture with independent channel verification and explicit risk tracking.</p>
+              <div class="v-label" style="color:var(--cyan);font-size:18px;">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
+              <p class="body-text" style="font-size:22px;">Stable, traceable architecture with independent channel verification and explicit risk tracking.</p>
             </div>
           </div>
         </div>
@@ -464,7 +463,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:400px;height:400px;top:-50px;right:-50px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 10 · Final Design Rationale</div>
+          <div class="section-tag">Final Design Rationale</div>
           <h2 class="slide-title">Why <em>V4</em> is the right answer</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
             ${[
@@ -496,7 +495,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 11 · Circuit Overview</div>
+          <div class="section-tag">Circuit Overview</div>
           <h2 class="slide-title">Full signal chain — <em>end to end</em></h2>
           <div class="signal-chain" style="margin-bottom:20px;">
             ${[
@@ -547,11 +546,11 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 12 · Input Stage</div>
+          <div class="section-tag">Input Stage</div>
           <h2 class="slide-title">The biosensor front-end — <em>EIS input stage</em></h2>
           <div class="two-col wide">
             <div>
-              <div class="diagram-placeholder" style="height:260px;">
+              <div class="diagram-placeholder" style="height:320px;">
                 <div class="diagram-icon">\uD83D\uDD0C</div>
                 <div class="diagram-label">EIS Antibody Sensor Symbol</div>
                 <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);opacity:0.4;text-align:center;padding:0 20px;position:relative;z-index:1;">
@@ -597,7 +596,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 13 · Output Stage</div>
+          <div class="section-tag">Output Stage</div>
           <h2 class="slide-title">MUX + <em>output values</em> — what the ADC sees</h2>
           <div class="two-col">
             <div>
@@ -688,7 +687,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:300px;height:300px;top:-50px;left:-50px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 14 · Conclusions</div>
+          <div class="section-tag">Conclusions</div>
           <h2 class="slide-title">Learnings &amp; <em>next steps</em></h2>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
             ${[
@@ -723,7 +722,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:420px;height:420px;top:-120px;right:-120px;"></div>
       <div class="slide-inner" style="justify-content:center;align-items:center;text-align:center;">
         <div class="stagger" style="max-width:980px;">
-          <div class="section-tag" style="margin:0 auto 22px;">slide 15 · Closing</div>
+          <div class="section-tag" style="margin:0 auto 22px;">Closing</div>
           <h2 class="slide-title" style="font-size:clamp(64px,8vw,116px);">Thank You</h2>
           <p class="body-text" style="font-size:34px;margin-top:8px;">Questions and feedback welcome.</p>
         </div>
