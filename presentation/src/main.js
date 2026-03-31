@@ -19,11 +19,6 @@ const slideDefs = [
             for Neonatal <span class="gold">Sepsis</span> Detection
           </h1>
           <div class="rule"></div>
-          <ul class="slide-bullets" style="max-width:820px;margin-bottom:34px;">
-            <li>Three-marker bedside screen: <strong style="color:var(--text);">IL-6, PCT, CRP</strong></li>
-            <li>Goal: detect risk earlier than culture turnaround</li>
-            <li>Output: timeline-informed sepsis risk support</li>
-          </ul>
           <div class="team-grid">
             ${['Neeor Alam','Cassandra Len De Vera','Hannah Nguyen','Calumn Hickerson'].map((n,i) => `
             <div class="team-card" style="animation-delay:${0.6+i*0.1}s">
@@ -52,10 +47,9 @@ const slideDefs = [
             <div>
               <div class="rule"></div>
               <ul class="slide-bullets">
-                <li>Life-threatening infection in infants <strong style="color:var(--text);">&lt; 28 days old</strong></li>
-                <li>Blood cultures take <strong style="color:var(--text);">24–72 hours</strong> — septic shock develops in hours</li>
-                <li>Current POC devices: single biomarker, binary yes/no</li>
-                <li>No temporal context — <em>when</em> did infection start?</li>
+                <li style="font-size:24px;">Life-threatening infection in infants <strong style="color:var(--text);">&lt; 28 days old</strong></li>
+                <li style="font-size:26px;">Blood cultures: <strong style="color:var(--text);">24–72 hours</strong> turnaround</li>
+                <li style="font-size:26px;">Current POC: <strong style="color:var(--text);">single marker</strong>, binary output</li>
               </ul>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px;">
@@ -105,10 +99,10 @@ const slideDefs = [
           <div class="card gold-accent" style="padding:20px 22px;">
             <div class="v-label" style="color:var(--gold);">Decision Basis</div>
             <ul class="slide-bullets">
-              <li>Blood culture confirms, but takes <strong style="color:var(--text);">36–48 h</strong></li>
-              <li>PCR can be faster, but limited practical availability</li>
+              <li>No single marker can reliably represent sepsis status</li>
               <li>Need strong <strong style="color:var(--text);">sensitivity + PPV/NPV</strong> for early screening</li>
-              <li>Final selection: IL-6 + PCT + CRP with antibody-based recognition</li>
+              <li>Final selection done through literature review: IL-6 + PCT + CRP</li>
+              <li>Detection chemistry: antibody-based recognition</li>
             </ul>
           </div>
         </div>
@@ -132,14 +126,13 @@ const slideDefs = [
             <ul class="slide-bullets">
               <li>No current POC tool maps <strong style="color:var(--text);">sepsis timeline progression</strong></li>
               <li>Clinicians need both presence and stage, not binary output only</li>
-              <li>Our gap: multi-marker signal fusion for earlier action</li>
             </ul>
           </div>
           <div class="two-col">
             <div>
               <p class="mono-label" style="margin-bottom:10px;color:var(--red);">current standard</p>
               <div class="card red-accent">
-                <p class="body-text" style="font-size:18px;">Single marker \u2192 binary result \u2192 no timeline</p>
+                <p class="body-text" style="font-size:24px;">Single marker \u2192 binary result \u2192 no timeline</p>
               </div>
             </div>
             <div>
@@ -162,9 +155,9 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 05 · Biomarker Strategy</div>
+          <div class="section-tag">slide 07 · Biomarker Strategy</div>
           <h2 class="slide-title">Why a <em>three-point</em> sensor?</h2>
-          <p class="slide-subtitle">One biomarker is a snapshot. Three biomarkers are a story.</p>
+          <p class="slide-subtitle" style="font-size:clamp(30px,3vw,40px);">One biomarker is a snapshot. Three biomarkers are a story.</p>
           <div class="card" style="padding:28px;">
             <div class="diagram-placeholder" style="height:200px;" id="timeline-viz">
               <div style="position:relative;z-index:1;width:100%;padding:0 20px;">
@@ -188,7 +181,8 @@ const slideDefs = [
                       <text x="10" y="85" fill="${b.color}" font-family="JetBrains Mono" font-size="10" font-weight="700">${b.label}</text>
                     </svg>`).join('')}
                 </div>
-                <p class="mono-label" style="text-align:center;margin-top:4px;opacity:0.6;">time post-infection \u2192</p>
+                <p class="mono-label" style="text-align:center;margin-top:4px;opacity:0.9;">time post-infection \u2192</p>
+                <p class="body-text" style="text-align:center;font-size:20px;margin-top:8px;">Caption: IL-6 spikes first, PCT follows, CRP rises later for staging support.</p>
               </div>
             </div>
           </div>
@@ -214,15 +208,15 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 06 · Biomarker Selection</div>
+          <div class="section-tag">slide 08 · Biomarker Selection</div>
           <h2 class="slide-title"><em>Which</em> markers, and why?</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
             ${[
-              { name:'IL-6', color:'var(--cyan)', window:'2–4 h', role:'Earliest inflammatory responder', value:'Best early sensitivity' },
-              { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity' },
-              { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support' },
+              { name:'IL-6', color:'var(--cyan)', window:'2–4 h', role:'Earliest inflammatory responder', value:'Best early sensitivity', active:false },
+              { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity', active:false },
+              { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support', active:true },
             ].map(m => `
-            <div class="card" style="padding:20px;border-color:${m.color}44;">
+            <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.active ? `${m.color}` : `${m.color}44`};box-shadow:${m.active ? `0 0 22px ${m.color}33` : 'none'};" data-marker="${m.name}">
               <div style="font-family:var(--font-display);font-size:34px;font-weight:800;color:${m.color};margin-bottom:10px;">${m.name}</div>
               <p class="mono-label" style="color:${m.color};margin-bottom:6px;">Time Window</p>
               <p class="body-text" style="font-size:19px;margin-bottom:10px;">${m.window}</p>
@@ -230,9 +224,35 @@ const slideDefs = [
               <p class="body-text" style="font-size:18px;">${m.value}</p>
             </div>`).join('')}
           </div>
+          <div class="card gold-accent" style="margin-top:14px;padding:16px 20px;">
+            <p class="body-text" id="marker-highlight" style="font-size:22px;">CRP highlight: tracks later-phase progression and monitoring response.</p>
+          </div>
         </div>
       </div>
-    `
+    `,
+    onActivate: () => {
+      const points = Array.from(document.querySelectorAll('.marker-point'))
+      const highlight = document.getElementById('marker-highlight')
+      if (!points.length || !highlight) return
+      const notes = [
+        { marker: 'IL-6', text: 'IL-6 highlight: earliest spike enables rapid early-warning support.' },
+        { marker: 'PCT', text: 'PCT highlight: stronger bacterial specificity improves confidence.' },
+        { marker: 'CRP', text: 'CRP highlight: tracks later-phase progression and monitoring response.' },
+      ]
+      let idx = 0
+      const rotate = () => {
+        points.forEach((el, i) => {
+          const active = i === idx
+          el.style.borderColor = active ? 'var(--gold)' : 'var(--border-bright)'
+          el.style.boxShadow = active ? '0 0 22px rgba(232,197,106,0.33)' : 'none'
+        })
+        highlight.textContent = notes[idx].text
+        idx = (idx + 1) % notes.length
+      }
+      rotate()
+      if (window.__markerTimer) clearInterval(window.__markerTimer)
+      window.__markerTimer = setInterval(rotate, 2400)
+    }
   },
 
   // ─── SLIDE 7: IL-6 / PCT / CRP DEEP DIVE ──────────
@@ -243,7 +263,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 07 · Marker Deep Dive</div>
+          <div class="section-tag">slide 09 · Marker Deep Dive</div>
           <h2 class="slide-title">IL-6 · PCT · CRP — the <em>decision logic</em></h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
             ${[
@@ -271,7 +291,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 08 · Sensor Values</div>
+          <div class="section-tag">slide 09 · Sensor Values</div>
           <h2 class="slide-title">Equivalent circuit values <em>per channel</em></h2>
           <p class="slide-subtitle">Core channel values + one interactive example.</p>
           <div class="two-col">
@@ -362,7 +382,6 @@ const slideDefs = [
             <ul class="slide-bullets">
               <li>Safety-first design principle: prioritize minimizing false negatives in early screening</li>
               <li>Ethical framing: unnecessary treatment risk is generally lower than missed neonatal sepsis</li>
-              <li>Output intent: risk-based support tool, not absolute diagnosis claim</li>
             </ul>
           </div>
           <div class="timeline">
@@ -377,7 +396,7 @@ const slideDefs = [
               <div>
                 <div class="mono-label" style="margin-bottom:3px;">${t.date}</div>
                 <div style="font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--text);margin-bottom:5px;">${t.title}</div>
-                <p class="body-text" style="font-size:16px;">${t.body}</p>
+                <p class="body-text" style="font-size:20px;">${t.body}</p>
               </div>
             </div>`).join('')}
           </div>
@@ -400,26 +419,24 @@ const slideDefs = [
             <ul class="slide-bullets">
               <li>Professional accountability required explicit trade-off documentation</li>
               <li>Reliability goal drove progression: single \u2192 dual \u2192 triple marker</li>
-              <li>Tri-marker strategy improves sensitivity across disease stages</li>
-              <li>We disclosed vulnerabilities and residual risks instead of overclaiming accuracy</li>
             </ul>
           </div>
           <div class="version-row" style="margin-bottom:14px;">
-            <div class="version-card rejected">
+            <div class="version-card">
               <div class="v-label">V1 \u2014 Single Marker (IL-6)</div>
               <p class="body-text" style="font-size:18px;">Strong early signal, but short half-life limits reliability alone.</p>
             </div>
-            <div class="version-card rejected">
+            <div class="version-card">
               <div class="v-label">V2 \u2014 Dual Marker (PCT + CRP)</div>
               <p class="body-text" style="font-size:18px;">Improved trend capture, but still misses earliest sepsis dynamics.</p>
             </div>
           </div>
           <div class="version-row">
-            <div class="version-card rejected">
+            <div class="version-card">
               <div class="v-label">V3 \u2014 Triple Marker (switch-based)</div>
               <p class="body-text" style="font-size:18px;">Right concept, but switch-model instability failed verification standards.</p>
             </div>
-            <div class="version-card active-v">
+            <div class="version-card active-v" style="box-shadow:0 0 28px rgba(0,220,200,0.25);border-color:var(--cyan);">
               <div class="v-label" style="color:var(--cyan);">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
               <p class="body-text" style="font-size:18px;">Stable, traceable architecture with independent channel verification and explicit risk tracking.</p>
             </div>
@@ -438,7 +455,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:400px;height:400px;top:-50px;right:-50px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 11 · Final Design Rationale</div>
+          <div class="section-tag">slide 10 · Final Design Rationale</div>
           <h2 class="slide-title">Why <em>V4</em> is the right answer</h2>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
             ${[
@@ -470,7 +487,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 12 · Circuit Overview</div>
+          <div class="section-tag">slide 11 · Circuit Overview</div>
           <h2 class="slide-title">Full signal chain — <em>end to end</em></h2>
           <div class="signal-chain" style="margin-bottom:20px;">
             ${[
@@ -521,7 +538,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 13 · Input Stage</div>
+          <div class="section-tag">slide 12 · Input Stage</div>
           <h2 class="slide-title">The biosensor front-end — <em>EIS input stage</em></h2>
           <div class="two-col wide">
             <div>
@@ -571,7 +588,7 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 14 · Output Stage</div>
+          <div class="section-tag">slide 13 · Output Stage</div>
           <h2 class="slide-title">MUX + <em>output values</em> — what the ADC sees</h2>
           <div class="two-col">
             <div>
@@ -662,7 +679,7 @@ const slideDefs = [
       <div class="orb orb-cyan" style="width:300px;height:300px;top:-50px;left:-50px;"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 15 · Conclusions</div>
+          <div class="section-tag">slide 14 · Conclusions</div>
           <h2 class="slide-title">Learnings &amp; <em>next steps</em></h2>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
             ${[
@@ -674,8 +691,8 @@ const slideDefs = [
               <div style="display:flex;flex-direction:column;gap:8px;">
                 ${col.items.map(i => `
                 <div style="display:flex;gap:10px;align-items:flex-start;">
-                  <span style="color:${col.color};flex-shrink:0;margin-top:2px;">\u2192</span>
-                  <p class="body-text" style="font-size:16px;">${i}</p>
+                  <span style="color:${col.color};flex-shrink:0;margin-top:2px;">\u25B8</span>
+                  <p class="body-text" style="font-size:22px;">${i}</p>
                 </div>`).join('')}
               </div>
             </div>`).join('')}
@@ -685,6 +702,21 @@ const slideDefs = [
               Biological sample \u2192 electrical signal \u2192 clinical decision
             </p>
           </div>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: 'thank-you',
+    section: 'closing',
+    render: () => `
+      <div class="slide-bg"></div>
+      <div class="orb orb-cyan" style="width:420px;height:420px;top:-120px;right:-120px;"></div>
+      <div class="slide-inner" style="justify-content:center;align-items:center;text-align:center;">
+        <div class="stagger" style="max-width:980px;">
+          <div class="section-tag" style="margin:0 auto 22px;">slide 15 · Closing</div>
+          <h2 class="slide-title" style="font-size:clamp(64px,8vw,116px);">Thank You</h2>
+          <p class="body-text" style="font-size:34px;margin-top:8px;">Questions and feedback welcome.</p>
         </div>
       </div>
     `
@@ -700,13 +732,13 @@ const slideOrder = [
   'versions',
   '3pt-sensor',
   'biomarkers',
-  'markers-deep',
   'values-parallel',
   'why-final',
   'circuit-overview',
   'input-circuit',
   'mux-output',
   'learnings',
+  'thank-you',
 ]
 
 const slides = slideOrder.map((id) => slideDefs.find((slide) => slide.id === id)).filter(Boolean)
