@@ -1,7 +1,7 @@
 import './style.css'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
-const slides = [
+const slideDefs = [
 
   // ─── SLIDE 1: TITLE ───────────────────────────────
   {
@@ -88,21 +88,39 @@ const slides = [
         <div class="stagger">
           <div class="section-tag">slide 03 · State of the Art</div>
           <h2 class="slide-title">Existing Biosensor <em>Approaches</em></h2>
-          <p class="slide-subtitle">Why none of them solve the problem completely.</p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-            ${[
-              { label: 'Antibody + Electrochemical', pro: 'Clinically validated, lots of literature', con: 'Requires cold-chain storage, degrades over time', color: 'red-accent' },
-              { label: 'QCM / Piezoelectric', pro: 'Label-free mass sensing', con: 'Mechanical complexity, temperature-sensitive', color: 'red-accent' },
-              { label: 'Optical (SPR)', pro: 'Very fast, high sensitivity', con: 'Expensive hardware, not POC-friendly', color: 'red-accent' },
-              { label: 'MIP + Electrochemical', pro: 'Excellent shelf life, no cold chain', con: 'Hard to synthesise for large proteins (PCT)', color: '' },
-              { label: 'Aptamer + EIS \u2713', pro: 'DNA-stable, chemically synthesised, miniaturisable', con: 'Requires validated aptamer sequences', color: 'gold-accent' },
-              { label: 'Nanobody + Capacitive', pro: 'Small size, high affinity', con: 'Still protein-based \u2014 stability limitations', color: '' },
-            ].map(m => `
-            <div class="card ${m.color}" style="padding:16px 18px;">
-              <div class="v-label" style="color:${m.color === 'gold-accent' ? 'var(--gold)' : m.color === 'red-accent' ? 'var(--text-muted)' : 'var(--cyan)'};">${m.label}</div>
-              <div style="font-family:var(--font-body);font-size:15px;color:#4ade80;margin:8px 0 3px;">+ ${m.pro}</div>
-              <div style="font-family:var(--font-body);font-size:15px;color:var(--red);">\u2212 ${m.con}</div>
-            </div>`).join('')}
+          <p class="slide-subtitle">Why current tools still miss early, reliable neonatal sepsis decisions.</p>
+          <div class="card red-accent" style="padding:20px 24px;margin-bottom:18px;">
+            <div class="v-label" style="color:var(--red);">Core Clinical Reality</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="card" style="padding:16px;background:rgba(255,107,122,0.06);border-color:rgba(255,107,122,0.25);">
+                <div class="mono-label" style="color:var(--red);margin-bottom:6px;">Gap 1</div>
+                <p class="body-text" style="font-size:16px;">No tool consistently diagnoses sepsis <strong style="color:var(--text);">early enough</strong> for frontline intervention.</p>
+              </div>
+              <div class="card" style="padding:16px;background:rgba(255,107,122,0.06);border-color:rgba(255,107,122,0.25);">
+                <div class="mono-label" style="color:var(--red);margin-bottom:6px;">Gap 2</div>
+                <p class="body-text" style="font-size:16px;">No single biomarker is reliable enough to represent full sepsis status alone.</p>
+              </div>
+            </div>
+          </div>
+          <div class="two-col" style="gap:18px;">
+            <div class="card" style="padding:20px 22px;">
+              <div class="v-label">Why gold standard is insufficient alone</div>
+              <ul class="slide-bullets">
+                <li>Positive blood culture confirmation: typically <strong style="color:var(--text);">36–48 h</strong></li>
+                <li>Too slow for urgent neonatal treatment windows</li>
+                <li>&lt;1% of suspected neonatal sepsis cases yield positive cultures</li>
+                <li>PCR can be faster, but is not routinely available in many settings</li>
+              </ul>
+            </div>
+            <div class="card gold-accent" style="padding:20px 22px;">
+              <div class="v-label" style="color:var(--gold);">How we chose biomarkers</div>
+              <ul class="slide-bullets">
+                <li>Needed combined <strong style="color:var(--text);">high sensitivity, specificity, PPV, and NPV</strong></li>
+                <li>Used multi-marker strategy to support both diagnosis and exclusion</li>
+                <li>Selected IL-6 + PCT + CRP to cover early-to-late progression</li>
+                <li>Detection chemistry in our design uses <strong style="color:var(--text);">antibody-based recognition</strong></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -399,14 +417,21 @@ const slides = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 09 · Design Process</div>
-          <h2 class="slide-title">How we <em>arrived</em> here</h2>
+          <div class="section-tag">slide 05 · Process + Professionalism</div>
+          <h2 class="slide-title">How professionalism shaped our <em>process</em></h2>
+          <div class="card gold-accent" style="padding:18px 22px;margin-bottom:14px;">
+            <ul class="slide-bullets">
+              <li>Safety-first design principle: prioritize minimizing false negatives in early screening</li>
+              <li>Ethical framing: unnecessary treatment risk is generally lower than missed neonatal sepsis</li>
+              <li>Output intent: risk-based support tool, not absolute diagnosis claim</li>
+            </ul>
+          </div>
           <div class="timeline">
             ${[
-              { date:'Meeting 1 \u2014 Mar 15', title:'Problem scoping', body:'Identified neonatal sepsis \u00B7 Brainstormed biomarkers \u00B7 Lit review planned', dot:''},
-              { date:'Meeting 2 \u2014 Mar 20', title:'Biosensor type locked', body:'Aptamer > Antibody (stability) \u00B7 EIS > Optical (cost) \u00B7 IL-6 + PCT + CRP locked', dot:'gold'},
-              { date:'Meeting 3 \u2014 Mar 25', title:'Circuit architecture decided', body:'Three parallel TIAs over analog switch \u00B7 Filter: fc = 5 Hz \u00B7 LTSpice assigned', dot:''},
-              { date:'Meeting 4 \u2014 Mar 28', title:'4:1 MUX confirmed', body:'Behavioral MUX verified in LTSpice \u00B7 V3 analog-switch documented \u00B7 Final schematic', dot:'gold'},
+              { date:'Meeting 1 \u2014 Mar 15', title:'Clinical problem definition', body:'Confirmed urgency limits of blood culture \u00B7 set early-detection requirement', dot:''},
+              { date:'Meeting 2 \u2014 Mar 20', title:'Reliability criteria set', body:'Selected metrics focus: sensitivity + PPV/NPV + practical bedside usability', dot:'gold'},
+              { date:'Meeting 3 \u2014 Mar 25', title:'Design risk review', body:'Compared single/dual/triple marker reliability and documented failure modes', dot:''},
+              { date:'Meeting 4 \u2014 Mar 28', title:'Responsible final architecture', body:'Locked tri-marker with transparent limits and risk-based output philosophy', dot:'gold'},
             ].map(t => `
             <div class="timeline-item">
               <div class="timeline-dot ${t.dot}"></div>
@@ -430,38 +455,46 @@ const slides = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:center;">
         <div class="stagger">
-          <div class="section-tag">slide 10 · Design Iterations</div>
-          <h2 class="slide-title">Versions we <em>considered</em> and why we moved on</h2>
+          <div class="section-tag">slide 06 · Accountability Through Iteration</div>
+          <h2 class="slide-title">Transparent evolution for <em>reliability</em></h2>
+          <div class="card" style="padding:18px 22px;margin-bottom:14px;">
+            <ul class="slide-bullets">
+              <li>Professional accountability required explicit trade-off documentation</li>
+              <li>Reliability goal drove progression: single \u2192 dual \u2192 triple marker</li>
+              <li>Tri-marker strategy improves sensitivity across disease stages</li>
+              <li>We disclosed vulnerabilities and residual risks instead of overclaiming accuracy</li>
+            </ul>
+          </div>
           <div class="version-row" style="margin-bottom:14px;">
             <div class="version-card rejected">
-              <div class="v-label">V1 \u2014 Antibody + Amperometric</div>
+              <div class="v-label">V1 \u2014 Single Marker (IL-6)</div>
               <ul class="slide-bullets">
-                <li style="font-size:15px;">Cold-chain storage required</li>
-                <li style="font-size:15px;">Degrades in 4\u20138 weeks — fails lifetime criterion</li>
+                <li style="font-size:15px;">Strong early signal but short half-life vulnerability</li>
+                <li style="font-size:15px;">Insufficient standalone accountability for full progression</li>
               </ul>
             </div>
             <div class="version-card rejected">
-              <div class="v-label">V2 \u2014 Single-channel EIS</div>
+              <div class="v-label">V2 \u2014 Dual Marker (PCT + CRP)</div>
               <ul class="slide-bullets">
-                <li style="font-size:15px;">Proved aptamer + EIS on PCT (Randles cell)</li>
-                <li style="font-size:15px;">One marker can\u2019t build a timeline</li>
+                <li style="font-size:15px;">Improved trend capture but still misses earliest dynamics</li>
+                <li style="font-size:15px;">Better reliability, but not enough for high-confidence screening</li>
               </ul>
             </div>
           </div>
           <div class="version-row">
             <div class="version-card rejected">
-              <div class="v-label">V3 \u2014 Triple Biomarker + Analog Switch</div>
+              <div class="v-label">V3 \u2014 Triple Marker (switch-based)</div>
               <ul class="slide-bullets">
-                <li style="font-size:15px;">LTSpice SW component limitations</li>
-                <li style="font-size:15px;">Simulation instability \u2192 abandoned</li>
+                <li style="font-size:15px;">Concept met accountability goal, but simulation robustness failed</li>
+                <li style="font-size:15px;">Switch model instability created unacceptable verification risk</li>
               </ul>
             </div>
             <div class="version-card active-v">
               <div class="v-label" style="color:var(--cyan);">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
               <ul class="slide-bullets">
-                <li style="font-size:15px;">Independent TIA per channel (Rf = 100k\u03A9) + bandpass</li>
-                <li style="font-size:15px;">4:1 behavioral MUX \u2192 ADC readout</li>
-                <li style="font-size:15px;">Clean, simulatable, independently verifiable</li>
+                <li style="font-size:15px;">Independent channel verification supports traceable accountability</li>
+                <li style="font-size:15px;">4:1 behavioral MUX with stable readout path to ADC</li>
+                <li style="font-size:15px;">Explicitly tracked risks: false positives, cross-reactivity, model limits</li>
               </ul>
             </div>
           </div>
@@ -732,6 +765,26 @@ const slides = [
     `
   }
 ]
+
+const slideOrder = [
+  'title',
+  'problem',
+  'current-models',
+  'our-gap',
+  'design-process',
+  'versions',
+  '3pt-sensor',
+  'biomarkers',
+  'markers-deep',
+  'values-parallel',
+  'why-final',
+  'circuit-overview',
+  'input-circuit',
+  'mux-output',
+  'learnings',
+]
+
+const slides = slideOrder.map((id) => slideDefs.find((slide) => slide.id === id)).filter(Boolean)
 
 // ─── ENGINE ───────────────────────────────────────────
 let current = 0
