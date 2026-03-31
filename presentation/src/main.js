@@ -98,7 +98,7 @@ const slideDefs = [
           </div>
           <div class="card gold-accent" style="padding:20px 22px;">
             <div class="v-label" style="color:var(--gold);">Decision Basis</div>
-            <ul class="slide-bullets">
+            <ul class="slide-bullets" style="font-size:24px;">
               <li>No single marker can reliably represent sepsis status</li>
               <li>Need strong <strong style="color:var(--text);">sensitivity + PPV/NPV</strong> for early screening</li>
             </ul>
@@ -136,7 +136,7 @@ const slideDefs = [
             <div>
               <p class="mono-label" style="margin-bottom:10px;color:var(--cyan);">our proposal</p>
               <div class="card">
-                <p class="body-text" style="font-size:18px;">Three markers \u2192 integrated readout \u2192 earlier intervention</p>
+                <p class="body-text" style="font-size:24px;">Three markers \u2192 integrated readout \u2192 earlier intervention</p>
               </div>
             </div>
           </div>
@@ -215,32 +215,52 @@ const slideDefs = [
               { name:'PCT', color:'var(--gold)', window:'8–24 h', role:'Bacterial-sepsis specific', value:'Highest decision specificity', active:false, focus:'High specificity improves bacterial-risk confidence.' },
               { name:'CRP', color:'#ff9980', window:'24–48 h', role:'Late progression marker', value:'Strong monitoring support', active:true, focus:'Late sustained rise supports progression monitoring.' },
             ].map(m => `
-            <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.active ? `${m.color}` : `${m.color}44`};box-shadow:${m.active ? `0 0 22px ${m.color}33` : 'none'};" data-marker="${m.name}">
-              <div style="font-family:var(--font-display);font-size:34px;font-weight:800;color:${m.color};margin-bottom:10px;">${m.name}</div>
+            <div class="card marker-point ${m.active ? 'active' : ''}" style="padding:20px;border-color:${m.color}66;background:${m.color}12;" data-marker="${m.name}" data-color="${m.color}">
+              <div class="marker-name" style="font-family:var(--font-display);font-size:34px;font-weight:800;color:transparent;-webkit-text-stroke:1px ${m.color};margin-bottom:10px;">${m.name}</div>
               <p class="mono-label" style="color:${m.color};margin-bottom:6px;">Time Window</p>
               <p class="body-text" style="font-size:19px;margin-bottom:10px;">${m.window}</p>
               <p class="body-text" style="font-size:18px;margin-bottom:6px;">${m.role}</p>
-              <p class="body-text marker-value" style="font-size:18px;" data-default="${m.value}" data-focus="${m.focus}">${m.value}</p>
+              <p class="body-text marker-value" style="font-size:18px;color:transparent;-webkit-text-stroke:1px ${m.color};font-weight:700;" data-default="${m.value}" data-focus="${m.focus}" data-color="${m.color}">${m.value}</p>
             </div>`).join('')}
           </div>
         </div>
       </div>
     `,
-    onActivate: (dir = 1) => {
+    onActivate: () => {
       const points = Array.from(document.querySelectorAll('.marker-point'))
       if (!points.length) return
-      const step = dir >= 0 ? 1 : -1
-      const count = points.length
-      window.__markerIdx = typeof window.__markerIdx === 'number' ? window.__markerIdx : 0
-      window.__markerIdx = (window.__markerIdx + step + count) % count
-      points.forEach((el, i) => {
-        const active = i === window.__markerIdx
-        el.style.borderColor = active ? 'var(--gold)' : 'var(--border-bright)'
-        el.style.boxShadow = active ? '0 0 22px rgba(232,197,106,0.33)' : 'none'
-        const valueEl = el.querySelector('.marker-value')
-        if (!valueEl) return
-        valueEl.textContent = active ? valueEl.dataset.focus : valueEl.dataset.default
+      if (window.__markerTimers) window.__markerTimers.forEach((t) => clearTimeout(t))
+      window.__markerTimers = []
+      window.__markerStepDone = false
+      const paint = (activeIdx = null) => {
+        points.forEach((el, i) => {
+          const active = i === activeIdx
+          const color = el.dataset.color
+          const nameEl = el.querySelector('.marker-name')
+          const valueEl = el.querySelector('.marker-value')
+          if (nameEl) {
+            nameEl.style.color = active ? color : 'transparent'
+          }
+          if (valueEl) {
+            valueEl.textContent = active ? valueEl.dataset.focus : valueEl.dataset.default
+            valueEl.style.color = active ? color : 'transparent'
+            valueEl.style.fontWeight = active ? '800' : '700'
+          }
+        })
+      }
+      window.__paintMarkers = paint
+      paint(null)
+    },
+    onAdvance: (dir = 1) => {
+      if (dir < 0 || window.__markerStepDone) return false
+      const paint = window.__paintMarkers
+      if (typeof paint !== 'function') return false
+      ;[0, 1, 2].forEach((idx, step) => {
+        const timer = setTimeout(() => paint(idx), step * 420)
+        window.__markerTimers.push(timer)
       })
+      window.__markerStepDone = true
+      return true
     }
   },
 
@@ -411,17 +431,17 @@ const slideDefs = [
             </ul>
           </div>
           <div class="version-row" style="margin-bottom:14px;">
-            <div class="version-card">
+            <div class="version-card" style="background:rgba(0,220,200,0.08);border-color:rgba(0,220,200,0.45);">
               <div class="v-label">V1 \u2014 Single Marker (IL-6)</div>
               <p class="body-text" style="font-size:18px;">Strong early signal, but short half-life limits reliability alone.</p>
             </div>
-            <div class="version-card">
+            <div class="version-card" style="background:rgba(232,197,106,0.08);border-color:rgba(232,197,106,0.45);">
               <div class="v-label">V2 \u2014 Dual Marker (PCT + CRP)</div>
               <p class="body-text" style="font-size:18px;">Improved trend capture, but still misses earliest sepsis dynamics.</p>
             </div>
           </div>
           <div class="version-row">
-            <div class="version-card">
+            <div class="version-card" style="background:rgba(255,153,128,0.08);border-color:rgba(255,153,128,0.45);">
               <div class="v-label">V3 \u2014 Triple Marker (switch-based)</div>
               <p class="body-text" style="font-size:18px;">Right concept, but switch-model instability failed verification standards.</p>
             </div>
@@ -481,7 +501,7 @@ const slideDefs = [
           <div class="signal-chain" style="margin-bottom:20px;">
             ${[
               { label:'Blood Sample', sub:'electrode contact' },
-              { label:'EIS Aptasensor', sub:'Randles cell' },
+              { label:'EIS Antibody Sensor', sub:'Randles cell' },
               { label:'AC Excitation', sub:'V\u2081 = 1V AC' },
               { label:'TIA (LT1677)', sub:'Rf = 100k\u03A9' },
               { label:'Bandpass Filter', sub:'fc \u2248 5 Hz' },
@@ -533,7 +553,7 @@ const slideDefs = [
             <div>
               <div class="diagram-placeholder" style="height:260px;">
                 <div class="diagram-icon">\uD83D\uDD0C</div>
-                <div class="diagram-label">EIS Aptasensor Symbol</div>
+                <div class="diagram-label">EIS Antibody Sensor Symbol</div>
                 <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);opacity:0.4;text-align:center;padding:0 20px;position:relative;z-index:1;">
                   BiosensorEIS custom component<br>WE \u2192 RE with Rs, Rct \u2225 Cdl
                 </div>
@@ -542,7 +562,7 @@ const slideDefs = [
             <div class="stagger">
               <ul class="slide-bullets" style="margin-bottom:16px;">
                 <li>Each channel = simplified Randles cell</li>
-                <li>Aptamer layer on WE \u2192 biomarker-dependent Cdl</li>
+                <li>Antibody layer on WE \u2192 biomarker-dependent Cdl</li>
               </ul>
               <div class="card" style="padding:18px;margin-bottom:10px;">
                 <div class="mono-label" style="margin-bottom:6px;">Randles model</div>
@@ -762,6 +782,7 @@ function render() {
 }
 
 function navigate(dir) {
+  if (slides[current].onAdvance && slides[current].onAdvance(dir)) return
   const next = current + dir
   if (next < 0 || next >= slides.length) return
 
