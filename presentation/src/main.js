@@ -29,10 +29,10 @@ const SCHEMATIC_NOTES =
   ' — approximate)'
 
 // Assets in `presentation/public/`: full schematic + MUX detail
-const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
-const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
-const OPAMP_IMG_BEFORE_AFTER = '/BeforeandAfterOpAmp.png'
-const OPAMP_IMG_AFTER_AMP = '/AfterAmp.jpeg'
+const CIRCUIT_IMG_MAIN = './circuit-main.jpeg'
+const CIRCUIT_IMG_MUX = './circuit-mux-zoom.png'
+const OPAMP_IMG_BEFORE_AFTER = './BeforeandAfterOpAmp.png'
+const OPAMP_IMG_AFTER_AMP = './AfterAmp.jpeg'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
