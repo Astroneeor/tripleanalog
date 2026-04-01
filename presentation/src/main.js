@@ -600,11 +600,11 @@ const slideDefs = [
           <div class="op-amp-stack">
             <figure class="op-amp-figure">
               <img src="${OPAMP_IMG_BEFORE_AFTER}" alt="Before and after op amp comparison" loading="lazy" />
-              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">Before + after (combined view)</figcaption>
+              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">Before and after (combined PNG) — before first, after second</figcaption>
             </figure>
             <figure class="op-amp-figure">
               <img src="${OPAMP_IMG_AFTER_AMP}" alt="After amplification output" loading="lazy" />
-              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">After amplification (filtered output)</figcaption>
+              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">After amplification only (filtered output)</figcaption>
             </figure>
           </div>
         </div>

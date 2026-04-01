@@ -46,8 +46,8 @@ Files here are served from the site root (`/filename`).
 | `Sepsis circuit v20.asc` | LTSpice netlist; resistor values referenced in copy |
 | `circuit-main.jpeg` | Full schematic on **Circuit Overview** |
 | `circuit-mux-zoom.png` | MUX (ADG1408) zoom, side-by-side with main |
-| `AfterOpAmp.jpeg` | **Analog front-end** slide — single filtered-output waveform |
-| `BeforeOpAmp.jpeg` | Optional / unused in current deck |
+| `BeforeandAfterOpAmp.png` | Analog front-end slide — combined **before + after** image (before shown first) |
+| `AfterOpAmp.jpeg` | Analog front-end slide — after-amplification / filtered output image |
 
 ## Project layout
 
