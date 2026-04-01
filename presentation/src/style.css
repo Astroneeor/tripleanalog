@@ -316,6 +316,37 @@ body::before {
 }
 .version-card.rejected .v-label { color: var(--text-muted); }
 
+/* ─── CIRCUIT SCREENSHOTS (LTSpice) ─────────────────── */
+.circuit-screenshots {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+.circuit-shot {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.circuit-shot img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+}
+.circuit-shot--mux img {
+  max-height: 520px;
+  max-width: 360px;
+}
+
 /* ─── PLACEHOLDER DIAGRAM ────────────────────────────── */
 .diagram-placeholder {
   width: 100%; border: 1px dashed var(--border-bright);

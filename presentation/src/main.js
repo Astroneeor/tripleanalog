@@ -1,5 +1,37 @@
 import './style.css'
 
+// LTSpice `public/Sepsis circuit v20.asc` — resistor / cap values used in deck copy.
+// Rct1/cdl1, Rct2/cdl2, Rct3/cdl3 are mapped to IL-6 / PCT / CRP in the same order as netlist InstNames.
+const SCHEMATIC_V20 = {
+  channels: [
+    { id: 'IL-6', rct: '200 kΩ', cdl: '22 pF', rctOhm: 200e3, cdlF: 22e-12 },
+    { id: 'PCT', rct: '300 kΩ', cdl: '47 pF', rctOhm: 300e3, cdlF: 47e-12 },
+    { id: 'CRP', rct: '100 kΩ', cdl: '10 pF', rctOhm: 100e3, cdlF: 10e-12 },
+  ],
+  rf: '100 kΩ',
+  rhp: '160 kΩ',
+  rlp: '16 kΩ',
+  cBand: '100 nF',
+  cComp: '50 pF',
+  mux: 'ADG1408',
+  ac: '~1 V peak · 100 Hz (V1)',
+  supply: '3.3 V · 1.65 V ref',
+}
+
+// Band corners from R–C pairs (first-order): ~10 Hz high-pass, ~100 Hz low-pass (order-of-magnitude).
+const SCHEMATIC_NOTES =
+  'Bandpass ~10–100 Hz (from Rhp ' +
+  SCHEMATIC_V20.rhp +
+  ', Rlp ' +
+  SCHEMATIC_V20.rlp +
+  ', C ' +
+  SCHEMATIC_V20.cBand +
+  ' — approximate)'
+
+// Add to `presentation/public/`: circuit-main.png (full schematic), circuit-mux-zoom.png (MUX zoom)
+const CIRCUIT_IMG_MAIN = '/circuit-main.png'
+const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
+
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
 
@@ -301,14 +333,14 @@ const slideDefs = [
         <div class="stagger">
           <div class="section-tag">Sensor Values</div>
           <h2 class="slide-title">Equivalent circuit values <em>per channel</em></h2>
-          <p class="slide-subtitle">Core channel values + one interactive example.</p>
+          <p class="slide-subtitle">R<sub>ct</sub> / C<sub>dl</sub> from LTSpice v20; concentration ↔ impedance still needs calibration.</p>
           <div class="two-col">
             <div>
               <div style="display:grid;grid-template-columns:1fr;gap:10px;">
                 ${[
-                  { label:'IL-6 channel', vals:'Rct\u2080 5k\u03A9 · Cdl\u2080 10pF · Kd 1 ng/mL', tone:'var(--cyan)' },
-                  { label:'PCT channel', vals:'Rct\u2080 500k\u03A9 · Cdl\u2080 22pF · Kd 5 ng/mL', tone:'var(--gold)' },
-                  { label:'CRP channel', vals:'Rct\u2080 50k\u03A9 · Cdl\u2080 47pF · Kd 100 ng/mL', tone:'#ff9980' },
+                  { label:'IL-6 (Rct1 / Cdl1)', vals:'Rct ' + SCHEMATIC_V20.channels[0].rct + ' · Cdl ' + SCHEMATIC_V20.channels[0].cdl + ' · Kd TBD', tone:'var(--cyan)' },
+                  { label:'PCT (Rct2 / Cdl2)', vals:'Rct ' + SCHEMATIC_V20.channels[1].rct + ' · Cdl ' + SCHEMATIC_V20.channels[1].cdl + ' · Kd TBD', tone:'var(--gold)' },
+                  { label:'CRP (Rct3 / Cdl3)', vals:'Rct ' + SCHEMATIC_V20.channels[2].rct + ' · Cdl ' + SCHEMATIC_V20.channels[2].cdl + ' · Kd TBD', tone:'#ff9980' },
                 ].map(c => `
                 <div class="card" style="padding:16px;border-color:${c.tone}44;">
                   <p class="mono-label" style="color:${c.tone};margin-bottom:6px;">${c.label}</p>
@@ -318,27 +350,27 @@ const slideDefs = [
             </div>
             <div>
               <div class="card" style="padding:20px;">
-                <div class="mono-label" style="margin-bottom:12px;">Interactive: IL-6 channel</div>
+                <div class="mono-label" style="margin-bottom:12px;">Illustrative: IL-6 channel (not concentration-calibrated)</div>
                 <div class="conc-slider-wrap">
-                  <label>IL-6 concentration (ng/mL)</label>
-                  <input type="range" id="conc-slider" min="0.01" max="10" step="0.01" value="1">
-                  <div class="conc-readout" id="conc-val">1.00 ng/mL</div>
-                  <div class="conc-interp" id="conc-interp">Borderline elevated — early sepsis</div>
+                  <label>Relative binding load (0–10, arbitrary units)</label>
+                  <input type="range" id="conc-slider" min="0" max="10" step="0.1" value="2">
+                  <div class="conc-readout" id="conc-val">2.0 (relative)</div>
+                  <div class="conc-interp" id="conc-interp">Higher load \u2192 higher Rct \u2192 lower TIA amplitude (trend)</div>
                 </div>
                 <div class="rule" style="margin:14px 0;"></div>
                 <div class="readout-panel">
-                  <div class="readout-header">COMPUTED EIS PARAMETERS</div>
+                  <div class="readout-header">MODELED FROM V20 NOMINAL (IL-6)</div>
                   <div class="readout-line">
-                    <span class="readout-key">Rct_eff</span>
-                    <span class="readout-val ok" id="rct-out">2.50 k\u03A9</span>
+                    <span class="readout-key">Rct (trend)</span>
+                    <span class="readout-val ok" id="rct-out">\u2248 200 k\u03A9</span>
                   </div>
                   <div class="readout-line">
-                    <span class="readout-key">Cdl_eff</span>
-                    <span class="readout-val ok" id="cdl-out">15.0 pF</span>
+                    <span class="readout-key">Cdl (trend)</span>
+                    <span class="readout-val ok" id="cdl-out">\u2248 22 pF</span>
                   </div>
                   <div class="readout-line">
-                    <span class="readout-key">Vout (est.)</span>
-                    <span class="readout-val ok" id="vout-out">\u2014</span>
+                    <span class="readout-key">TIA V (order of)</span>
+                    <span class="readout-val ok" id="vout-out">\u2248 0.5 V pk</span>
                   </div>
                 </div>
               </div>
@@ -350,23 +382,24 @@ const slideDefs = [
     onActivate: () => {
       const slider = document.getElementById('conc-slider')
       if (!slider) return
+      const ch = SCHEMATIC_V20.channels[0]
       const update = () => {
-        const c = parseFloat(slider.value)
-        const Kd = 1, Rct0 = 5000, Cdl0 = 10e-12
-        const rct = Rct0 / (1 + c / Kd)
-        const cdl = Cdl0 * (1 + 0.5 * c / Kd)
-        const vout = (rct / (rct + 1000)) * 1
-        document.getElementById('conc-val').textContent = c.toFixed(2) + ' ng/mL'
-        document.getElementById('rct-out').textContent = (rct / 1000).toFixed(2) + ' k\u03A9'
-        document.getElementById('cdl-out').textContent = (cdl * 1e12).toFixed(1) + ' pF'
-        document.getElementById('vout-out').textContent = (vout * 1000).toFixed(0) + ' mV'
-        const interp = c < 0.1 ? 'Normal range \u2014 no infection indicated'
-          : c < 1 ? 'Slightly elevated \u2014 monitor closely'
-          : c < 5 ? 'Elevated \u2014 early sepsis likely'
-          : 'Critically high \u2014 sepsis confirmed'
-        const color = c < 0.1 ? 'ok' : c < 1 ? 'ok' : c < 5 ? 'warn' : 'crit'
+        const load = parseFloat(slider.value)
+        const rct = ch.rctOhm * (1 + 0.12 * load)
+        const cdl = ch.cdlF * (1 + 0.05 * load)
+        const vPk = Math.max(0.12, 0.85 - 0.07 * load)
+        document.getElementById('conc-val').textContent = load.toFixed(1) + ' (relative)'
+        document.getElementById('rct-out').textContent = '\u2248 ' + (rct / 1e3).toFixed(0) + ' k\u03A9'
+        document.getElementById('cdl-out').textContent = '\u2248 ' + (cdl * 1e12).toFixed(0) + ' pF'
+        document.getElementById('vout-out').textContent = '\u2248 ' + vPk.toFixed(2) + ' V pk'
+        const interp = load < 2.5
+          ? 'Lower load — larger amplitude (qualitative low-risk trend)'
+          : load < 6.5
+            ? 'Mid load — medium amplitude'
+            : 'Higher load — smaller amplitude (qualitative high-risk trend)'
         document.getElementById('conc-interp').textContent = interp
-        ;['rct-out','cdl-out','vout-out'].forEach(id => {
+        const color = load < 3 ? 'ok' : load < 7 ? 'warn' : 'crit'
+        ;['rct-out', 'cdl-out', 'vout-out'].forEach((id) => {
           const el = document.getElementById(id)
           el.className = `readout-val ${color}`
         })
@@ -445,7 +478,7 @@ const slideDefs = [
               <p class="body-text" style="font-size:22px;">Right concept, but switch-model instability failed verification standards.</p>
             </div>
             <div class="version-card active-v" style="box-shadow:0 0 28px rgba(0,220,200,0.25);border-color:var(--cyan);">
-              <div class="v-label" style="color:var(--cyan);font-size:18px;">V4 \u2014 Three Parallel TIAs + 4:1 MUX</div>
+              <div class="v-label" style="color:var(--cyan);font-size:18px;">V4 \u2014 Three TIAs + ADG1408 MUX</div>
               <p class="body-text" style="font-size:22px;">Stable, traceable architecture with independent channel verification and explicit risk tracking.</p>
             </div>
           </div>
@@ -478,8 +511,8 @@ const slideDefs = [
           </div>
           <div class="card gold-accent" style="padding:20px 24px;">
             <p class="body-text" style="font-size:20px;">
-              <strong style="color:var(--gold);">Key relation:</strong>
-              concentration \u2191 \u2192 R<sub>ct</sub> \u2193 \u2192 V<sub>out</sub> \u2191
+              <strong style="color:var(--gold);">Key relation (qualitative):</strong>
+              binding load \u2191 \u2192 R<sub>ct</sub> \u2191 \u2192 TIA amplitude \u2193
             </p>
           </div>
         </div>
@@ -501,35 +534,44 @@ const slideDefs = [
             ${[
               { label:'Blood Sample', sub:'electrode contact' },
               { label:'EIS Antibody Sensor', sub:'Randles cell' },
-              { label:'AC Excitation', sub:'V\u2081 = 1V AC' },
-              { label:'TIA (LT1677)', sub:'Rf = 100k\u03A9' },
-              { label:'Bandpass Filter', sub:'fc \u2248 5 Hz' },
-              { label:'4:1 MUX', sub:'channel select' },
-              { label:'ADC', sub:'12-bit STM32' },
-              { label:'Display', sub:'threshold LED' },
+              { label:'AC Excitation', sub: SCHEMATIC_V20.ac },
+              { label:'TIA (LT1677)', sub:'Rf ' + SCHEMATIC_V20.rf },
+              { label:'Bandpass', sub: '~10–100 Hz (approx.)' },
+              { label: SCHEMATIC_V20.mux, sub:'MUX' },
+              { label:'ADC', sub:'12-bit (STM32)' },
+              { label:'Display', sub:'threshold / UI' },
             ].flatMap((n, i) => [
               `<div class="chain-node">${n.label}<div class="cn-label">${n.sub}</div></div>`,
               i < 7 ? '<div class="chain-arrow">\u2192</div>' : ''
             ]).join('')}
           </div>
           <div class="two-col wide">
-            <div class="diagram-placeholder" style="height:220px;">
-              <div class="diagram-icon">\u26A1</div>
-              <div class="diagram-label">LTSpice Schematic Placeholder</div>
-              <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);opacity:0.4;margin-top:4px;">Insert simulation screenshot here</div>
+            <div class="circuit-screenshots">
+              <figure class="circuit-shot">
+                <img src="${CIRCUIT_IMG_MAIN}" alt="LTSpice full schematic" width="520" height="520" loading="lazy" />
+                <figcaption class="mono-label" style="margin-top:8px;opacity:0.85;">Full schematic (v20)</figcaption>
+              </figure>
+              <figure class="circuit-shot circuit-shot--mux">
+                <img src="${CIRCUIT_IMG_MUX}" alt="MUX detail" width="320" height="520" loading="lazy" />
+                <figcaption class="mono-label" style="margin-top:8px;opacity:0.85;">${SCHEMATIC_V20.mux} detail</figcaption>
+              </figure>
             </div>
             <div style="display:flex;flex-direction:column;gap:10px;">
               <div class="card" style="padding:14px 16px;">
-                <div class="mono-label" style="margin-bottom:6px;">V1 \u2014 AC source</div>
-                <p class="body-text" style="font-size:15px;">1V amplitude \u00B7 0.1\u201310 kHz sweep \u00B7 PCT @ 10 Hz, CRP @ 100 Hz</p>
+                <div class="mono-label" style="margin-bottom:6px;">V1 \u2014 AC excitation</div>
+                <p class="body-text" style="font-size:15px;">SINE(1.65, 1, 100): \u2248 ${SCHEMATIC_V20.ac} (matches v20)</p>
               </div>
               <div class="card" style="padding:14px 16px;">
-                <div class="mono-label" style="margin-bottom:6px;">Supply: \u00B11.65V split</div>
-                <p class="body-text" style="font-size:15px;">3.3V single-supply \u2192 virtual ground at 1.65V \u00B7 Battery-compatible</p>
+                <div class="mono-label" style="margin-bottom:6px;">Supply</div>
+                <p class="body-text" style="font-size:15px;">${SCHEMATIC_V20.supply} (V4 / V5 in v20)</p>
               </div>
               <div class="card" style="padding:14px 16px;">
-                <div class="mono-label" style="margin-bottom:6px;">Filter design</div>
-                <p class="body-text" style="font-size:15px;">R=31.8k\u03A9, C=1\u00B5F \u2192 fc \u2248 5 Hz \u00B7 Passes biosignal, rejects HF noise</p>
+                <div class="mono-label" style="margin-bottom:6px;">Bandpass (Rhp / Rlp / C)</div>
+                <p class="body-text" style="font-size:15px;">${SCHEMATIC_V20.rhp}, ${SCHEMATIC_V20.rlp}, ${SCHEMATIC_V20.cBand} \u2192 ${SCHEMATIC_NOTES}</p>
+              </div>
+              <div class="card" style="padding:14px 16px;">
+                <div class="mono-label" style="margin-bottom:6px;">Stability</div>
+                <p class="body-text" style="font-size:15px;">C1 = ${SCHEMATIC_V20.cComp} across feedback (TIA)</p>
               </div>
             </div>
           </div>
@@ -570,15 +612,15 @@ const slideDefs = [
                 </div>
               </div>
               <div class="card" style="padding:18px;margin-bottom:10px;">
-                <div class="mono-label" style="margin-bottom:6px;">Concentration \u2192 impedance</div>
-                <div style="font-family:var(--font-mono);font-size:16px;color:var(--gold);">
-                  Rct(C) = Rct\u2080 / (1 + C/Kd)
-                </div>
+                <div class="mono-label" style="margin-bottom:6px;">Binding \u2192 impedance</div>
+                <p class="body-text" style="font-size:17px;">More binding \u2192 higher R<sub>ct</sub> (Kd / curve fit TBD)</p>
+                <p class="mono-label" style="margin-top:10px;opacity:0.85;">v20 nominal (IL-6): Rct ${SCHEMATIC_V20.channels[0].rct}, Cdl ${SCHEMATIC_V20.channels[0].cdl}</p>
               </div>
               <div class="card" style="padding:18px;">
                 <div class="mono-label" style="margin-bottom:6px;">Voltage output (TIA)</div>
                 <div style="font-family:var(--font-mono);font-size:16px;color:var(--cyan);">
-                  V_out = I_sensor \u00D7 Rf
+                  V_out = I_sensor \u00D7 R_f<br/>
+                  <span style="opacity:0.85">R_f = ${SCHEMATIC_V20.rf}</span>
                 </div>
               </div>
             </div>
@@ -609,41 +651,41 @@ const slideDefs = [
                 </div>
                 <div class="mux-wire"></div>
                 <div class="mux-box">
-                  <div>MUX</div>
-                  <div style="font-size:8px;">4:1</div>
-                  <div style="font-size:8px;margin-top:4px;color:var(--text-muted);">S0 S1</div>
+                  <div>${SCHEMATIC_V20.mux}</div>
+                  <div style="font-size:8px;">8:1</div>
+                  <div style="font-size:8px;margin-top:4px;color:var(--text-muted);">select</div>
                 </div>
                 <div class="mux-wire"></div>
                 <div class="mux-out">V_out_MUX<br><span style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">\u2192 ADC</span></div>
               </div>
               <p class="body-text" style="font-size:16px;margin-top:14px;font-style:italic;">
-                Click a channel to see expected output at clinical concentrations.
+                Click a channel for nominal R<sub>ct</sub> and qualitative output bands (not concentration-calibrated).
               </p>
             </div>
             <div>
               <div class="readout-panel" style="height:100%;">
-                <div class="readout-header">SIMULATED OUTPUT — SEPTIC INFANT SAMPLE</div>
+                <div class="readout-header">QUALITATIVE EXAMPLE (NOT CALIBRATED)</div>
                 <div class="readout-line">
                   <span class="readout-key">Selected channel</span>
                   <span class="readout-val ok" id="ch-sel">IL-6</span>
                 </div>
                 <div class="readout-line">
                   <span class="readout-key">Concentration</span>
-                  <span class="readout-val warn" id="conc-disp">8.5 ng/mL</span>
+                  <span class="readout-val warn" id="conc-disp">TBD (wet lab)</span>
                 </div>
                 <div class="readout-line">
-                  <span class="readout-key">Rct_eff</span>
-                  <span class="readout-val ok" id="rct-disp">588 \u03A9</span>
+                  <span class="readout-key">Rct (nominal)</span>
+                  <span class="readout-val ok" id="rct-disp">${SCHEMATIC_V20.channels[0].rct}</span>
                 </div>
                 <div class="readout-line">
-                  <span class="readout-key">TIA Vout</span>
-                  <span class="readout-val warn" id="vout-disp">369 mV</span>
+                  <span class="readout-key">TIA V (band)</span>
+                  <span class="readout-val warn" id="vout-disp">\u2248 0.4\u20130.8 V pk</span>
                 </div>
                 <div class="readout-line">
-                  <span class="readout-key">ADC code (12-bit)</span>
-                  <span class="readout-val ok" id="adc-disp">736 / 4095</span>
+                  <span class="readout-key">ADC (illustrative)</span>
+                  <span class="readout-val ok" id="adc-disp">\u2248 mid-scale / 4095</span>
                 </div>
-                <div class="readout-status sepsis" id="status-disp">\u26A0 SEPSIS THRESHOLD EXCEEDED</div>
+                <div class="readout-status sepsis" id="status-disp">\u26A0 Thresholds TBD after calibration</div>
               </div>
             </div>
           </div>
@@ -652,9 +694,9 @@ const slideDefs = [
     `,
     onActivate: () => {
       const data = {
-        'IL-6': { conc: '8.5 ng/mL', rct: '588 \u03A9', vout: '369 mV', adc: '736 / 4095', status: true },
-        'CRP':  { conc: '12.3 \u00B5g/mL', rct: '3.85 k\u03A9', vout: '794 mV', adc: '1587 / 4095', status: true },
-        'PCT':  { conc: '22.1 ng/mL', rct: '18.5 k\u03A9', vout: '942 mV', adc: '1884 / 4095', status: true },
+        'IL-6': { conc: 'TBD (wet lab)', rct: SCHEMATIC_V20.channels[0].rct, vout: '\u2248 0.4\u20130.8 V pk', adc: '\u2248 mid-scale / 4095' },
+        'CRP': { conc: 'TBD (wet lab)', rct: SCHEMATIC_V20.channels[2].rct, vout: '\u2248 0.3\u20130.7 V pk', adc: '\u2248 mid-scale / 4095' },
+        'PCT': { conc: 'TBD (wet lab)', rct: SCHEMATIC_V20.channels[1].rct, vout: '\u2248 0.35\u20130.75 V pk', adc: '\u2248 mid-scale / 4095' },
       }
 
       function selectChannel(ch) {
