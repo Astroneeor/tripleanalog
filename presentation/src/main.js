@@ -31,7 +31,8 @@ const SCHEMATIC_NOTES =
 // Assets in `presentation/public/`: full schematic + MUX detail
 const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
 const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
-const OPAMP_IMG_FILTERED = '/AfterOpAmp.jpeg'
+const OPAMP_IMG_BEFORE_AFTER = '/BeforeandAfterOpAmp.png'
+const OPAMP_IMG_AFTER_AMP = '/AfterOpAmp.jpeg'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
@@ -596,10 +597,16 @@ const slideDefs = [
             <li><strong>Stage 1 — TIA:</strong> transimpedance amplification converts high-impedance (100 k\u03A9\u2013500 k\u03A9) biosensor charge transfers into raw voltage.</li>
             <li><strong>Stage 2 — MFB bandpass:</strong> active multiple-feedback filter; hardware-level 100 Hz isolation (Q = 2.5, passband gain = 1 V/V). <strong>System yield:</strong> safely bounds the 100 k\u03A9 target amplitude between 0.65 V and 2.65 V, neutralizing ADC aliasing and rail saturation threats.</li>
           </ul>
-          <figure class="op-amp-figure op-amp-figure--single">
-            <img src="${OPAMP_IMG_FILTERED}" alt="Filtered output waveform" loading="lazy" />
-            <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">Filtered output (post\u2013bandpass / AFE)</figcaption>
-          </figure>
+          <div class="op-amp-stack">
+            <figure class="op-amp-figure">
+              <img src="${OPAMP_IMG_BEFORE_AFTER}" alt="Before and after op amp comparison" loading="lazy" />
+              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">Before + after (combined view)</figcaption>
+            </figure>
+            <figure class="op-amp-figure">
+              <img src="${OPAMP_IMG_AFTER_AMP}" alt="After amplification output" loading="lazy" />
+              <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">After amplification (filtered output)</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     `
