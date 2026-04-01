@@ -32,7 +32,7 @@ const SCHEMATIC_NOTES =
 const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
 const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
 const OPAMP_IMG_BEFORE_AFTER = '/BeforeandAfterOpAmp.png'
-const OPAMP_IMG_AFTER_AMP = '/AfterOpAmp.jpeg'
+const OPAMP_IMG_AFTER_AMP = '/AfterAmp.jpeg'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
