@@ -28,8 +28,8 @@ const SCHEMATIC_NOTES =
   SCHEMATIC_V20.cBand +
   ' — approximate)'
 
-// Add to `presentation/public/`: circuit-main.png (full schematic), circuit-mux-zoom.png (MUX zoom)
-const CIRCUIT_IMG_MAIN = '/circuit-main.png'
+// Assets in `presentation/public/`: full schematic + MUX detail
+const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
 const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
