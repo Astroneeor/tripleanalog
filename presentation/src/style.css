@@ -319,7 +319,7 @@ body::before {
 /* ─── CIRCUIT SCREENSHOTS (LTSpice) ─────────────────── */
 .circuit-screenshots {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.75fr);
   gap: 18px;
   align-items: start;
 }
@@ -342,9 +342,37 @@ body::before {
   display: block;
   border-radius: 4px;
 }
+.circuit-shot--main img {
+  max-width: min(100%, 820px);
+  width: 100%;
+}
 .circuit-shot--mux img {
   max-height: 520px;
   max-width: 360px;
+}
+
+/* ─── OP-AMP BEFORE/AFTER (slide: TIA & output) ─────── */
+.op-amp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1320px;
+}
+.op-amp-figure {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
+  padding: 14px 20px;
+}
+.op-amp-figure img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
 }
 
 /* ─── PLACEHOLDER DIAGRAM ────────────────────────────── */

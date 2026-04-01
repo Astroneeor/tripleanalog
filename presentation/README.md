@@ -1,42 +1,67 @@
-# BMEN 388 — Neonatal Sepsis Biosensor Presentation
+# BMEN 388 — Neonatal sepsis biosensor (slide deck)
 
-A 15-slide interactive presentation for the BMEN 388 Biomedical Signals course project at the University of Calgary.
+Vite + vanilla JavaScript presentation: arrow-key navigation, slide transitions, a few interactive slides. Styling lives in `src/style.css`; slide content and order are in `src/main.js`.
 
-## What is this?
-
-A Vite + vanilla JS slide deck presenting a conceptual three-biomarker (IL-6, PCT, CRP) electrochemical aptasensor platform for point-of-care neonatal sepsis detection. Arrow-key navigation, staggered animations, interactive EIS parameter sliders, and a MUX channel selector.
-
-## Quick Start
+## Quick start
 
 ```bash
+cd presentation
 npm install
-npm run dev       # http://localhost:5173
+npm run dev
 ```
 
-## Build & Deploy
+Open the URL Vite prints (typically `http://localhost:5173`).
+
+## Build (for hosting)
 
 ```bash
-npm run build     # outputs to /dist
+npm run build
 ```
 
-Upload `/dist` to Cloudflare Pages, Vercel, or Netlify. Asset paths are relative (`base: './'`), so it works from any subdirectory.
+Output is written to `dist/`. `vite.config.js` sets `base: './'` so assets work from a subdirectory (e.g. Cloudflare Pages).
+
+```bash
+npm run preview
+```
+
+Preview the production build locally.
+
+## Deploy
+
+Upload the contents of `dist/` to a static host (Cloudflare Pages, Netlify, Vercel, etc.). Point the build command to `npm run build` and the output directory to `dist` if the platform asks.
 
 ## Navigation
 
-| Key | Action |
-|-----|--------|
-| `→` / `↓` / `Space` | Next slide |
-| `←` / `↑` | Previous slide |
+- **Right / Down / Space** — next slide  
+- **Left / Up** — previous slide  
 
-On-screen arrow buttons and a progress bar are also provided.
+Some slides use an extra in-slide step (e.g. biomarker highlight) before advancing.
 
-## Interactive Slides
+## Assets (`public/`)
 
-- **Slide 8** — Drag the IL-6 concentration slider to see Rct, Cdl, and Vout update live via the Langmuir binding equation.
-- **Slide 14** — Click IL-6 / CRP / PCT channels on the MUX diagram to see simulated ADC output values for a septic infant sample.
+Files here are served from the site root (`/filename`).
 
-## Team
+| File | Role |
+|------|------|
+| `Sepsis circuit v20.asc` | LTSpice netlist; resistor values referenced in copy |
+| `circuit-main.jpeg` | Full schematic on **Circuit Overview** |
+| `circuit-mux-zoom.png` | MUX (ADG1408) zoom, side-by-side with main |
+| `BeforeOpAmp.jpeg` | TIA slide — waveform before op amp |
+| `AfterOpAmp.jpeg` | TIA slide — waveform after op amp |
 
-Neeor Alam · Cassandra Len De Vera · Hannah Nguyen · Calumn Hickerson
+## Project layout
 
-University of Calgary · BMEN 388 · March 2026
+```
+presentation/
+├── index.html
+├── package.json
+├── vite.config.js
+├── public/           # static assets (images, .asc)
+└── src/
+    ├── main.js       # slides, navigation, interactives
+    └── style.css
+```
+
+## Credits
+
+BMEN 388 · University of Calgary — team listed on the title slide.

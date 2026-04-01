@@ -31,6 +31,8 @@ const SCHEMATIC_NOTES =
 // Assets in `presentation/public/`: full schematic + MUX detail
 const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
 const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
+const OPAMP_IMG_BEFORE = '/BeforeOpAmp.jpeg'
+const OPAMP_IMG_AFTER = '/AfterOpAmp.jpeg'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
@@ -547,12 +549,12 @@ const slideDefs = [
           </div>
           <div class="two-col wide">
             <div class="circuit-screenshots">
-              <figure class="circuit-shot">
-                <img src="${CIRCUIT_IMG_MAIN}" alt="LTSpice full schematic" width="520" height="520" loading="lazy" />
+              <figure class="circuit-shot circuit-shot--main">
+                <img src="${CIRCUIT_IMG_MAIN}" alt="LTSpice full schematic" loading="lazy" />
                 <figcaption class="mono-label" style="margin-top:8px;opacity:0.85;">Full schematic (v20)</figcaption>
               </figure>
               <figure class="circuit-shot circuit-shot--mux">
-                <img src="${CIRCUIT_IMG_MUX}" alt="MUX detail" width="320" height="520" loading="lazy" />
+                <img src="${CIRCUIT_IMG_MUX}" alt="MUX detail" loading="lazy" />
                 <figcaption class="mono-label" style="margin-top:8px;opacity:0.85;">${SCHEMATIC_V20.mux} detail</figcaption>
               </figure>
             </div>
@@ -580,50 +582,30 @@ const slideDefs = [
     `
   },
 
-  // ─── SLIDE 13: INPUT CIRCUIT ───────────────────────
+  // ─── SLIDE 13: TIA / OUTPUT (was “input stage”; slide 12 in deck order) ──
   {
     id: 'input-circuit',
     section: 'circuit',
     render: () => `
       <div class="slide-bg"></div>
-      <div class="slide-inner" style="justify-content:center;">
+      <div class="slide-inner" style="justify-content:flex-start;padding-top:40px;">
         <div class="stagger">
-          <div class="section-tag">Input Stage</div>
-          <h2 class="slide-title">The biosensor front-end — <em>EIS input stage</em></h2>
-          <div class="two-col wide">
-            <div>
-              <div class="diagram-placeholder" style="height:320px;">
-                <div class="diagram-icon">\uD83D\uDD0C</div>
-                <div class="diagram-label">EIS Antibody Sensor Symbol</div>
-                <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);opacity:0.4;text-align:center;padding:0 20px;position:relative;z-index:1;">
-                  BiosensorEIS custom component<br>WE \u2192 RE with Rs, Rct \u2225 Cdl
-                </div>
-              </div>
-            </div>
-            <div class="stagger">
-              <ul class="slide-bullets" style="margin-bottom:16px;">
-                <li>Each channel = simplified Randles cell</li>
-                <li>Antibody layer on WE \u2192 biomarker-dependent Cdl</li>
-              </ul>
-              <div class="card" style="padding:18px;margin-bottom:10px;">
-                <div class="mono-label" style="margin-bottom:6px;">Randles model</div>
-                <div style="font-family:var(--font-mono);font-size:16px;color:var(--cyan);">
-                  Z = Rs + 1/( 1/Rct + j\u03C9Cdl )
-                </div>
-              </div>
-              <div class="card" style="padding:18px;margin-bottom:10px;">
-                <div class="mono-label" style="margin-bottom:6px;">Binding \u2192 impedance</div>
-                <p class="body-text" style="font-size:17px;">More binding \u2192 higher R<sub>ct</sub> (Kd / curve fit TBD)</p>
-                <p class="mono-label" style="margin-top:10px;opacity:0.85;">v20 nominal (IL-6): Rct ${SCHEMATIC_V20.channels[0].rct}, Cdl ${SCHEMATIC_V20.channels[0].cdl}</p>
-              </div>
-              <div class="card" style="padding:18px;">
-                <div class="mono-label" style="margin-bottom:6px;">Voltage output (TIA)</div>
-                <div style="font-family:var(--font-mono);font-size:16px;color:var(--cyan);">
-                  V_out = I_sensor \u00D7 R_f<br/>
-                  <span style="opacity:0.85">R_f = ${SCHEMATIC_V20.rf}</span>
-                </div>
-              </div>
-            </div>
+          <div class="section-tag">TIA &amp; output</div>
+          <h2 class="slide-title">Op amp stage — <em>input vs output</em></h2>
+          <p class="slide-subtitle" style="margin-bottom:16px;">LT1677 transimpedance amplifier: EIS current in, voltage out. R<sub>f</sub> = ${SCHEMATIC_V20.rf} (v20).</p>
+          <ul class="slide-bullets" style="margin-bottom:18px;max-width:1100px;">
+            <li><strong>Before</strong>: sinusoidal current from the sensor / front-end (high-Z path)</li>
+            <li><strong>After</strong>: amplified voltage swing for bandpass filtering and MUX</li>
+          </ul>
+          <div class="op-amp-stack">
+            <figure class="op-amp-figure">
+              <img src="${OPAMP_IMG_BEFORE}" alt="Waveform before op amp" loading="lazy" />
+              <figcaption class="mono-label" style="margin-top:10px;opacity:0.9;">Before op amp \u2014 input-side signal (current-driven)</figcaption>
+            </figure>
+            <figure class="op-amp-figure">
+              <img src="${OPAMP_IMG_AFTER}" alt="Waveform after op amp" loading="lazy" />
+              <figcaption class="mono-label" style="margin-top:10px;opacity:0.9;">After op amp \u2014 TIA output voltage (${SCHEMATIC_V20.rf} feedback)</figcaption>
+            </figure>
           </div>
         </div>
       </div>
