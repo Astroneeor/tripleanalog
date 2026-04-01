@@ -374,6 +374,9 @@ body::before {
   display: block;
   border-radius: 4px;
 }
+.op-amp-figure--single {
+  max-width: 1320px;
+}
 
 /* ─── PLACEHOLDER DIAGRAM ────────────────────────────── */
 .diagram-placeholder {

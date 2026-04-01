@@ -31,8 +31,7 @@ const SCHEMATIC_NOTES =
 // Assets in `presentation/public/`: full schematic + MUX detail
 const CIRCUIT_IMG_MAIN = '/circuit-main.jpeg'
 const CIRCUIT_IMG_MUX = '/circuit-mux-zoom.png'
-const OPAMP_IMG_BEFORE = '/BeforeOpAmp.jpeg'
-const OPAMP_IMG_AFTER = '/AfterOpAmp.jpeg'
+const OPAMP_IMG_FILTERED = '/AfterOpAmp.jpeg'
 
 // ─── SLIDE DEFINITIONS ────────────────────────────────
 const slideDefs = [
@@ -582,7 +581,7 @@ const slideDefs = [
     `
   },
 
-  // ─── SLIDE 13: TIA / OUTPUT (was “input stage”; slide 12 in deck order) ──
+  // ─── SLIDE 13: ANALOG FRONT-END (slide 12 in deck order) ──
   {
     id: 'input-circuit',
     section: 'circuit',
@@ -590,23 +589,17 @@ const slideDefs = [
       <div class="slide-bg"></div>
       <div class="slide-inner" style="justify-content:flex-start;padding-top:40px;">
         <div class="stagger">
-          <div class="section-tag">TIA &amp; output</div>
-          <h2 class="slide-title">Op amp stage — <em>input vs output</em></h2>
-          <p class="slide-subtitle" style="margin-bottom:16px;">LT1677 transimpedance amplifier: EIS current in, voltage out. R<sub>f</sub> = ${SCHEMATIC_V20.rf} (v20).</p>
-          <ul class="slide-bullets" style="margin-bottom:18px;max-width:1100px;">
-            <li><strong>Before</strong>: sinusoidal current from the sensor / front-end (high-Z path)</li>
-            <li><strong>After</strong>: amplified voltage swing for bandpass filtering and MUX</li>
+          <div class="section-tag">Analog front-end</div>
+          <h2 class="slide-title">Dual-stage <em>AFE</em></h2>
+          <ul class="slide-bullets" style="margin-bottom:22px;max-width:1180px;gap:14px;">
+            <li><strong>Architecture:</strong> dual-stage analog front-end (3.3 V rail / 1.65 V virtual ground).</li>
+            <li><strong>Stage 1 — TIA:</strong> transimpedance amplification converts high-impedance (100 k\u03A9\u2013500 k\u03A9) biosensor charge transfers into raw voltage.</li>
+            <li><strong>Stage 2 — MFB bandpass:</strong> active multiple-feedback filter; hardware-level 100 Hz isolation (Q = 2.5, passband gain = 1 V/V). <strong>System yield:</strong> safely bounds the 100 k\u03A9 target amplitude between 0.65 V and 2.65 V, neutralizing ADC aliasing and rail saturation threats.</li>
           </ul>
-          <div class="op-amp-stack">
-            <figure class="op-amp-figure">
-              <img src="${OPAMP_IMG_BEFORE}" alt="Waveform before op amp" loading="lazy" />
-              <figcaption class="mono-label" style="margin-top:10px;opacity:0.9;">Before op amp \u2014 input-side signal (current-driven)</figcaption>
-            </figure>
-            <figure class="op-amp-figure">
-              <img src="${OPAMP_IMG_AFTER}" alt="Waveform after op amp" loading="lazy" />
-              <figcaption class="mono-label" style="margin-top:10px;opacity:0.9;">After op amp \u2014 TIA output voltage (${SCHEMATIC_V20.rf} feedback)</figcaption>
-            </figure>
-          </div>
+          <figure class="op-amp-figure op-amp-figure--single">
+            <img src="${OPAMP_IMG_FILTERED}" alt="Filtered output waveform" loading="lazy" />
+            <figcaption class="mono-label" style="margin-top:12px;opacity:0.9;">Filtered output (post\u2013bandpass / AFE)</figcaption>
+          </figure>
         </div>
       </div>
     `
