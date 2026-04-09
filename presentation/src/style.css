@@ -273,6 +273,32 @@ body::before {
   50% { opacity: 1; transform: translateX(3px); }
 }
 
+/* Circuit overview slide: smaller header row so schematic reads larger */
+.slide-circuit-overview .section-tag {
+  font-size: 10px; padding: 4px 10px; margin-bottom: 10px;
+  letter-spacing: 0.18em;
+}
+.slide-circuit-overview .slide-title {
+  font-size: clamp(26px, 3.2vw, 44px);
+  margin-bottom: 8px; line-height: 1.12;
+}
+.signal-chain--compact .chain-node {
+  font-size: 9px; padding: 7px 5px; letter-spacing: 0.06em;
+}
+.signal-chain--compact .chain-node .cn-label {
+  font-size: 8px; margin-top: 2px;
+}
+.signal-chain--compact .chain-arrow {
+  font-size: 11px; padding: 0 2px;
+}
+.slide-circuit-overview .two-col.wide {
+  grid-template-columns: 1.55fr 0.82fr;
+  gap: 28px;
+}
+.slide-circuit-overview .circuit-shot--main img {
+  max-width: min(100%, 980px);
+}
+
 /* ─── BIOMARKER TABLE ────────────────────────────────── */
 .bm-table { width: 100%; border-collapse: collapse; }
 .bm-table th {

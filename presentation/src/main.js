@@ -29,7 +29,7 @@ const SCHEMATIC_NOTES =
   ' — approximate)'
 
 // Assets in `presentation/public/`: full schematic + MUX detail
-const CIRCUIT_IMG_MAIN = './circuit-main.jpeg'
+const CIRCUIT_IMG_MAIN = './circuit-main.png'
 const CIRCUIT_IMG_MUX = './circuit-mux-zoom.png'
 const OPAMP_IMG_BEFORE_AFTER = './BeforeandAfterOpAmp.png'
 const OPAMP_IMG_AFTER_AMP = './AfterAmp.jpeg'
@@ -528,11 +528,11 @@ const slideDefs = [
     section: 'circuit',
     render: () => `
       <div class="slide-bg"></div>
-      <div class="slide-inner" style="justify-content:center;">
+      <div class="slide-inner slide-circuit-overview" style="justify-content:center;">
         <div class="stagger">
           <div class="section-tag">Circuit Overview</div>
           <h2 class="slide-title">Full signal chain — <em>end to end</em></h2>
-          <div class="signal-chain" style="margin-bottom:20px;">
+          <div class="signal-chain signal-chain--compact" style="margin-bottom:12px;">
             ${[
               { label:'Blood Sample', sub:'electrode contact' },
               { label:'EIS Antibody Sensor', sub:'Randles cell' },
